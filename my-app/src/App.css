@@ -1,38 +1,87 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+
 .App {
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+header {
+  background-color: #2d4059;
   color: white;
+  padding: 1em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.App-link {
-  color: #61dafb;
+nav {
+  display: flex;
+  gap: 1em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.main-section {
+  display: flex;
+  justify-content: space-around;
+  padding: 2em;
+}
+
+.quick-entry-form {
+  flex: 1;
+  background-color: #fff;
+  padding: 1em;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.quick-entry-form input,
+.quick-entry-form textarea {
+  width: 100%;
+  margin-bottom: 1em;
+  padding: 0.5em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.image-upload-label {
+  display: block;
+  margin-bottom: 1em;
+  cursor: pointer;
+  color: #2d4059;
+}
+
+button {
+  background-color: #f76c6c;
+  color: white;
+  padding: 0.8em 1em;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ff5a5a;
+}
+
+.diary-entries {
+  flex: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+}
+
+.entry-card {
+  background-color: #fdfdfd;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.entry-card img {
+  max-width: 100%;
+  border-radius: 4px;
 }
