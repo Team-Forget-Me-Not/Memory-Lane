@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';  // Import Link from React Router
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks } from '@fortawesome/free-solid-svg-icons';
@@ -19,9 +20,6 @@ const App = () => {
     };
 
     setDiaryEntries([...diaryEntries, newEntry]);
-    // You may want to save the entries to a backend or local storage here
-
-    // Reset form fields
     setEntryTitle('');
     setEntryText('');
     setImage('');
@@ -32,10 +30,12 @@ const App = () => {
       <header>
         <h1>My Web Diary</h1>
         <nav>
+          <Link to="/create-account">
+          <FontAwesomeIcon icon={faPlus} /> Create Account
+          </Link>
           <FontAwesomeIcon icon={faCalendarAlt} /> Diary
           <FontAwesomeIcon icon={faList} /> Planner
           <FontAwesomeIcon icon={faTasks} /> Lists
-          {/* Add other navigation items/icons */}
         </nav>
       </header>
 
@@ -66,6 +66,7 @@ const App = () => {
             <FontAwesomeIcon icon={faSave} /> Save Entry
           </button>
         </div>
+        
 
         <div className="diary-entries">
           {diaryEntries.map((entry, index) => (
@@ -83,4 +84,3 @@ const App = () => {
 };
 
 export default App;
-
