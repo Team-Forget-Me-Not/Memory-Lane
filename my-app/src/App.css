@@ -2,7 +2,7 @@ body {
   font-family: 'Arial', sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #f0f0f0;
+  background-color: #f8f8f8; 
 }
 
 .App {
@@ -10,8 +10,8 @@ body {
 }
 
 header {
-  background-color: #2d4059;
-  color: white;
+  background-color: #3b5998; 
+  color: #ffffff;
   padding: 1em;
   display: flex;
   justify-content: space-between;
@@ -31,7 +31,7 @@ nav {
 
 .quick-entry-form {
   flex: 1;
-  background-color: #fff;
+  background-color: #ffffff;
   padding: 1em;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -42,7 +42,7 @@ nav {
   width: 100%;
   margin-bottom: 1em;
   padding: 0.5em;
-  border: 1px solid #ccc;
+  border: 1px solid #8e8e8e; 
   border-radius: 4px;
 }
 
@@ -50,16 +50,22 @@ nav {
   display: block;
   margin-bottom: 1em;
   cursor: pointer;
-  color: #2d4059;
+  color: #3b5998; 
+}
+
+
+a {
+  color:white;
 }
 
 button {
   background-color: #f76c6c;
-  color: white;
+  color: #ffffff;
   padding: 0.8em 1em;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.3s ease; 
 }
 
 button:hover {
@@ -79,6 +85,11 @@ button:hover {
   border: 1px solid #ddd;
   border-radius: 8px;
   box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease; 
+}
+
+.entry-card:hover {
+  transform: scale(1.03);
 }
 
 .entry-card img {

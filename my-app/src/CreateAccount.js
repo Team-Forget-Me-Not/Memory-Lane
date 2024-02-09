@@ -4,22 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope, faArrowRight, faVenusMars } from '@fortawesome/free-solid-svg-icons';
 
 const CreateAccount = () => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [fullName, setFullName] = useState('');
   const [gender, setGender] = useState('');
 
   const handleCreateAccount = () => {
-
-    console.log('Account created:', { username, email, password, fullName, gender });
-
+    console.log('Account created:', { firstName, lastName, username, email, password, gender });
+    setFirstName('');
+    setLastName('');
     setUsername('');
     setEmail('');
     setPassword('');
     setConfirmPassword('');
-    setFullName('');
     setGender('');
   };
 
@@ -31,9 +31,9 @@ const CreateAccount = () => {
           <FontAwesomeIcon icon={faUser} />
           <input
             type="text"
-            placeholder="Full Name"
-            value={fullName}
-            onChange={(e) => setFullName(e.target.value)}
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
           />
         </div>
 
@@ -41,9 +41,9 @@ const CreateAccount = () => {
           <FontAwesomeIcon icon={faUser} />
           <input
             type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
           />
         </div>
 
