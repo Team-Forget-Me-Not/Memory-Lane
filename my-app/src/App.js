@@ -30,6 +30,9 @@ const App = () => {
       <header>
         <h1>My Web Diary</h1>
         <nav>
+          <Link to ="/login-page">
+            <FontAwesomeIcon icon={faPlus} />Login Page
+          </Link>
           <Link to="/create-account">
           <FontAwesomeIcon icon={faPlus} /> Create Account
           </Link>
