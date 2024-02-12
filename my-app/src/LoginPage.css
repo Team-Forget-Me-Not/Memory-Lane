@@ -1,0 +1,53 @@
+.header-Container{
+    background-color: blue;
+    text-align: center;
+}
+.h1{
+    font-size: xx-large;
+    color: white;
+    font-weight: bold;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.login-Center{
+    text-align: center;
+}
+
+.sign-up-btn{
+    background-color: red;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    border-radius: 15px;
+    margin-left: 15px;
+}
+.buttonContainer{
+    display: flex;
+    place-items: center;
+    width: 100%;
+    max-width: 225px;
+    margin-top: 20px;
+    padding: 50px;
+    padding-left: 675px;
+}
+.button{
+    background-color: red;
+    color: #ffffff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+    height:50px;
+    border-radius: 15px;
+    margin-left: 15px;
+}
+#forget-password{
+    color:#000000;
+    transition: opacity 0.3s ease;
+}
+#forget-password:hover{
+    opacity: 0.7;
+    cursor: pointer;
+}
