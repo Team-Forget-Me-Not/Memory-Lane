@@ -3,6 +3,7 @@ import './CreateAccount.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faEnvelope, faArrowRight, faVenusMars } from '@fortawesome/free-solid-svg-icons';
 
+
 const CreateAccount = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');

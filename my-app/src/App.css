@@ -10,10 +10,12 @@ body {
 }
 
 header {
-  background-color: #3b5998; 
-  color: #ffffff;
+  background-color:#7fd9ff; 
+  color: #ff5a5a;
+  cursor: pointer;
   padding: 1em;
   display: flex;
+  font-weight: bold;
   justify-content: space-between;
   align-items: center;
 }
@@ -21,6 +23,7 @@ header {
 nav {
   display: flex;
   gap: 1em;
+  font-weight: bold;
 }
 
 .main-section {
@@ -54,9 +57,13 @@ nav {
 }
 
 
-a {
-  color:white;
-}
+a {            
+  color:#ff5a5a; /* Nav bar main color*/
+  font-weight: bold;
+  
+  
+}   
+
 
 button {
   background-color: #f76c6c;
@@ -96,3 +103,4 @@ button:hover {
   max-width: 100%;
   border-radius: 4px;
 }
+
