@@ -4,14 +4,17 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import CreateAccount from './CreateAccount';
 import App from './App';
 import Login from './LoginPage';
+import Calendar from './Calendar';
 
 const MainApp = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/create-account" component={CreateAccount} />\
-        <Route path="/login-page" component={Login}  />
+        <Route path="/create-account" component={CreateAccount} />
+        <Route path="/login-page" component={Login} />
+        <Route path="/Calendar" component={Calendar} />  
         <Route path="/" component={App} />
+      
       </Switch>
     </Router>
   );
