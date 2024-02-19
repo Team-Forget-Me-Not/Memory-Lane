@@ -70,14 +70,17 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        <h1>Memory Lane</h1>
+        <Link to="/Front-page">
+          <h1>Memory Lane</h1>
+        </Link>
         <nav>
-          <Link to="/login-page">
+          {/* Removed or commented out login and create account button links */}
+          {/*<Link to="/login-page">
             <FontAwesomeIcon icon={faPlus} /> Login Page
           </Link>
           <Link to="/create-account">
             <FontAwesomeIcon icon={faPlus} /> Create Account
-          </Link>
+          </Link>*/}
           <Link to="/calendar">
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
           </Link>

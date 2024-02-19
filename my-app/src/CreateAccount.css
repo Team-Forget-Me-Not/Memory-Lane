@@ -1,6 +1,34 @@
 .create-account-page {
   text-align: center;
-  
+  position: relative; /* Change position to relative so the absolute positioning is relative to this container */
+
+  /* Background for the left side */
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 50%; 
+    background-image: url('/public/diary.png'); 
+    background-repeat: repeat-y;
+    background-position: left;
+    background-size: 50%;
+  }
+
+  /* Background for the right side */
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 50%; 
+    background-image: url('/public/diary.png'); 
+    background-repeat: repeat-y;
+    background-position: right;
+    background-size: 50%;
+  }
 }
 
 
@@ -9,10 +37,11 @@
   text-align: left;
   width: 400px;
   padding: 20px;
-  background-color: #62c2cc; 
+  background-color: #7fd9ff; 
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 50px;
+  
 }
 
 h1 {
