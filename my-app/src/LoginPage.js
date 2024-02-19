@@ -25,6 +25,7 @@ const Login = () =>{
     return(
         <div>
             <div className="header-Container">
+            <img src = "MemoryLane.jpeg" alt = "Brain" className = "logo"/>
             <h1>Memory Lane</h1>
         </div>
 
@@ -60,6 +61,8 @@ const Login = () =>{
                 </div>
             </form>
         </div>
+
+            <img src="CCL Diary.jpg" alt="Diary with pen" className="cover-image"/>
         </div>
     );
 }
