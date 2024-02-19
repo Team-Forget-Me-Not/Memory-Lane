@@ -5,6 +5,7 @@ import CreateAccount from './CreateAccount';
 import App from './App';
 import Login from './LoginPage';
 import Calendar from './Calendar';
+import FrontPage from './FrontPage';
 
 const MainApp = () => {
   return (
@@ -12,7 +13,8 @@ const MainApp = () => {
       <Switch>
         <Route path="/create-account" component={CreateAccount} />
         <Route path="/login-page" component={Login} />
-        <Route path="/Calendar" component={Calendar} />  
+        <Route path="/Calendar" component={Calendar} /> 
+        <Route path="/Front-page" component={FrontPage} />  
         <Route path="/" component={App} />
       
       </Switch>
