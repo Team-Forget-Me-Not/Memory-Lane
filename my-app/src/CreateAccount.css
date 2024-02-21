@@ -1,3 +1,4 @@
+/* Styles for the create account page container */
 .create-account-page {
   text-align: center;
   position: relative; /* Change position to relative so the absolute positioning is relative to this container */
@@ -9,8 +10,8 @@
     top: 0;
     left: 0;
     height: 100%;
-    width: 50%; 
-    background-image: url('/public/diary.png'); 
+    width: 50%;
+    background-image: url('/public/diary.png'); /* Background image for the left side */
     background-repeat: repeat-y;
     background-position: left;
     background-size: 50%;
@@ -23,61 +24,66 @@
     top: 0;
     right: 0;
     height: 100%;
-    width: 50%; 
-    background-image: url('/public/diary.png'); 
+    width: 50%;
+    background-image: url('/public/diary.png'); /* Background image for the right side */
     background-repeat: repeat-y;
     background-position: right;
     background-size: 50%;
   }
 }
 
-
+/* Styles for the create account form */
 .create-account-form {
   display: inline-block;
   text-align: left;
   width: 400px;
   padding: 20px;
-  background-color: #7fd9ff; 
+  background-color: #7fd9ff; /* Light blue background color */
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 50px;
-  
 }
 
+/* Styles for the h1 heading inside the create account form */
 h1 {
   font-size: 35px;
-  color: #f76c6c;
+  color: #f76c6c; /* Reddish-pink text color */
 }
 
+/* Styles for input groups (e.g., first name, last name) */
 .input-group {
   margin-bottom: 20px;
 }
 
+/* Styles for input and select elements inside an input group */
 .input-group input,
 .input-group select {
   width: 100%;
   padding: 10px;
   margin-top: 5px;
-  border: 1px solid #ffcc5c; 
+  border: 1px solid #ffcc5c; /* Light orange border color */
   border-radius: 4px;
   box-sizing: border-box;
 }
 
+/* Styles for the button group (e.g., create account button) */
 .button-group {
   text-align: center;
 }
 
+/* Styles for buttons */
 button {
   width: 100%;
   padding: 10px;
-  background-color: #4e89ae; 
+  background-color: #4e89ae; /* Blueish background color */
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease; 
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
 }
 
+/* Hover effect for buttons */
 button:hover {
-  background-color: #3b6688; 
+  background-color: #3b6688; /* Darker blue on hover */
 }
