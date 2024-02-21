@@ -1,73 +1,88 @@
-.header-Container{
-    background-color: blue;
-    text-align: center;
-}
-.h1{
-    font-size: xx-large;
-    color: white;
-    font-weight: bold;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-.login-Center{
+/* Styles for the header container */
+.header-Container {
+    background-color: blue; /* Blue background color */
     text-align: center;
 }
 
-.sign-up-btn{
-    background-color: red;
-    color: #ffffff;
+/* Styles for h1 within the header container */
+.h1 {
+    font-size: xx-large; /* Larger font size */
+    color: white; /* White text color */
+    font-weight: bold; /* Bold font weight */
+    font-family: 'Times New Roman', Times, serif; /* Font family styling */
+}
+
+/* Styles for the login center */
+.login-Center {
+    text-align: center;
+}
+
+/* Styles for the sign-up button */
+.sign-up-btn {
+    background-color: red; /* Red background color */
+    color: #ffffff; /* White text color */
     padding: 10px;
     border: none;
     cursor: pointer;
     width: 100%;
     max-width: 150px;
     height: 50px;
-    border-radius: 15px;
+    border-radius: 15px; /* Rounded corners */
     margin-left: 5%;
 }
-.buttonContainer{
+
+/* Styles for the button container */
+.buttonContainer {
     display: contents;
     place-items: center;
     width: 100%;
     margin-top: 20px;
     padding: 50px;
 }
-.button{
-    background-color: red;
-    color: #ffffff;
+
+/* Styles for the generic button */
+.button {
+    background-color: red; /* Red background color */
+    color: #ffffff; /* White text color */
     padding: 10px;
     border: none;
     cursor: pointer;
     width: 6.5%;
     max-width: 150px;
-    height:50px;
-    border-radius: 15px;
+    height: 50px;
+    border-radius: 15px; /* Rounded corners */
     margin-left: 5%;
 }
-#forget-password{
-    color:#000000;
-    transition: opacity 0.3s ease;
-}
-#forget-password:hover{
-    opacity: 0.7;
-    cursor: pointer;
+
+/* Styles for the forget password link */
+#forget-password {
+    color: #000000; /* Black text color */
+    transition: opacity 0.3s ease; /* Smooth opacity transition */
 }
 
-.cover-image{
-    width: 100vw;
-    height: 30%;
+/* Hover effect for forget password link */
+#forget-password:hover {
+    opacity: 0.7; /* Reduced opacity on hover */
+    cursor: pointer; /* Change cursor to pointer on hover */
+}
+
+/* Styles for the cover image */
+.cover-image {
+    width: 100vw; /* Full viewport width */
+    height: 30%; /* 30% of viewport height */
     position: absolute;
-    bottom:0;
-    left:0;
+    bottom: 0;
+    left: 0;
 }
 body{
     margin: 0; /* Remove default body margin */
     padding: 0; /* Remove default body padding */
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
-.logo{
-    width: 5%;
-    height: 5%;
-    margin-right: 95%;
 
+/* Styles for the logo */
+.logo {
+    width: 5%; /* 5% of the container width */
+    height: 5%; /* 5% of the container height */
+    margin-right: 95%; /* 95% right margin */
 }

@@ -1,66 +1,75 @@
 /* Calendar.css */
 
+/* Styles for the main calendar container */
 .calendar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .calendar button {
-    margin: 5px;
-    padding: 5px;
-    cursor: pointer;
-    background-color: #ff5a5a;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-  }
-  
-  .calendar h2 {
-    margin: 10px;
-    font-family: 'Monospace'; /* Use a monospaced font for a game-like feel */
-  }
-  
-  .calendar-grid {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 5px;
-    margin-top: 10px;
-  }
-  
-  .day-header,
-  .calendar-day {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 30px;
-    width: 30px;
-    border: 1px solid #ff5a5a;
-    cursor: pointer;
-  }
-  
-  .day-header {
-    background-color:#ff5a5a;
-    color: #fff;
-  }
-  
-  .calendar-day {
-    background-color: #fff;
-    color:#ff5a5a;
-  }
-  
-  .calendar-day.active:hover {
-    background-color: #ffe6e6; /* Light red on hover */
-  }
-  
-  .calendar-day.inactive {
-    background-color: #f0f0f0;
-    pointer-events: none;
-  }
-  
-  .calendar-day.selected {
-    background-color: #7fd9ff;  /* Darker blue */
-    color: #fff;
-  }
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+/* Styles for navigation buttons in the calendar */
+.calendar button {
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+  background-color: #ff5a5a; /* Red background color */
+  color: #fff; /* White text color */
+  border: none;
+  border-radius: 5px;
+}
+
+/* Styles for the month-year header in the calendar */
+.calendar h2 {
+  margin: 10px;
+  font-family: 'Monospace'; /* Use a monospaced font for a game-like feel */
+}
+
+/* Styles for the main calendar grid */
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin-top: 10px;
+}
+
+/* Styles for day headers and individual calendar days */
+.day-header,
+.calendar-day {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 30px;
+  width: 30px;
+  border: 1px solid #ff5a5a; /* Red border for both day headers and calendar days */
+  cursor: pointer;
+}
+
+/* Styles for day headers specifically */
+.day-header {
+  background-color: #ff5a5a; /* Red background color for day headers */
+  color: #fff; /* White text color */
+}
+
+/* Styles for calendar days specifically */
+.calendar-day {
+  background-color: #fff; /* White background color for calendar days */
+  color: #ff5a5a; /* Red text color */
+}
+
+/* Hover effect for active calendar days */
+.calendar-day.active:hover {
+  background-color: #ffe6e6; /* Light red on hover for active days */
+}
+
+/* Styles for inactive calendar days (before and after the current month) */
+.calendar-day.inactive {
+  background-color: #f0f0f0; /* Light gray background for inactive days */
+  pointer-events: none; /* Disable pointer events for inactive days */
+}
+
+/* Styles for selected calendar days */
+.calendar-day.selected {
+  background-color: #7fd9ff; /* Darker blue background for selected days */
+  color: #fff; /* White text color for selected days */
+}

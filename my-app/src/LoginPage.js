@@ -1,33 +1,40 @@
 import React, { useState } from "react";
 import './LoginPage.css';
-import { useHistory } from 'react-router-dom';// Import useNavigate
+import { useHistory } from 'react-router-dom'; // Import useNavigate
 import { Link } from 'react-router-dom';
 
-const Login = () =>{
-
+const Login = () => {
+    // State variables to manage email, password, error, and confirmation messages
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [confirmMessage, setConfirmMessage] = useState(null);
+    // Variable to store user ID
     var uid;
 
+    // Use the useHistory hook to navigate to different pages
     const history = useHistory();
 
-    const handleSignIn = async () =>{
-        try{
+    // Function to handle the sign-in process
+    const handleSignIn = async () => {
+        try {
+            // Display a success message
             setConfirmMessage('Sign-in successful!');
-            //Use the navigate to redirect to the homepage
+            // Use history to redirect to the homepage
             history.push('/');
-        }catch(error){
+        } catch (error) {
+            // Handle any errors during the sign-in process
             setError(error.message);
         }
     }
-    return(
+
+    return (
         <div>
+            {/* Header container with logo and title */}
             <div className="header-Container">
-            <img src = "MemoryLane.jpeg" alt = "Brain" className = "logo"/>
-            <h1>Memory Lane</h1>
-        </div>
+                <img src="MemoryLane.jpeg" alt="Brain" className="logo" />
+                <h1>Memory Lane</h1>
+            </div>
 
         <div className="login-Center">
             <h2>Login Page</h2>
@@ -50,15 +57,11 @@ const Login = () =>{
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 />
-                <Link to = "/forget-password">
                 <p id="forget-password">Forget password</p>
-                </Link>
                 {error && <p className="error-message">{error}</p>}
                 {confirmMessage && <p className="confirm-message">{confirmMessage}</p>}
                 <div className="buttonContainer">
-                    <Link to = "/">
                     <button className="button">Login</button>
-                    </Link>
                     <Link to = "/create-account">
                         <button type='button' className='sign-up-btn'>Create Account</button>
                     </Link>
@@ -66,7 +69,8 @@ const Login = () =>{
             </form>
         </div>
 
-            <img src="CCL Diary.jpg" alt="Diary with pen" className="cover-image"/>
+            {/* Cover image */}
+            <img src="CCL Diary.jpg" alt="Diary with pen" className="cover-image" />
         </div>
     );
 }
