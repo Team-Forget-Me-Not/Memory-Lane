@@ -1,35 +1,32 @@
 /* Styles for the create account page container */
 .create-account-page {
   text-align: center;
-  position: relative; /* Change position to relative so the absolute positioning is relative to this container */
+  position: relative; /* Establishing relative positioning for child elements */
+}
 
-  /* Background for the left side */
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 50%;
-    background-image: url('/public/diary.png'); /* Background image for the left side */
-    background-repeat: repeat-y;
-    background-position: left;
-    background-size: 50%;
-  }
+/* Background images for the left and right sides of the container */
+.create-account-page::before,
+.create-account-page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-image: url('/public/diary.png'); /* Background image for the left and right sides */
+  background-repeat: repeat-y;
+  background-size: 50%;
+}
 
-  /* Background for the right side */
-  &::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 50%;
-    background-image: url('/public/diary.png'); /* Background image for the right side */
-    background-repeat: repeat-y;
-    background-position: right;
-    background-size: 50%;
-  }
+/* Style adjustments for the left background */
+.create-account-page::before {
+  left: 0;
+  background-position: left;
+}
+
+/* Style adjustments for the right background */
+.create-account-page::after {
+  right: 0;
+  background-position: right;
 }
 
 /* Styles for the create account form */
@@ -42,6 +39,8 @@
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   margin-top: 50px;
+  position: relative; /* Maintain relative positioning for child elements within the form */
+  z-index: 1; /* Ensure the form is on top of the background images */
 }
 
 /* Styles for the h1 heading inside the create account form */
@@ -66,7 +65,7 @@ h1 {
   box-sizing: border-box;
 }
 
-/* Styles for the button group (e.g., create account button) */
+/* Styles for the button group (e.g., create account button) - Note: This class isn't used in the provided code */
 .button-group {
   text-align: center;
 }
