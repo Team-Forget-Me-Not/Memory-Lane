@@ -6,11 +6,13 @@ import App from './App';
 import Login from './LoginPage';
 import Calendar from './Calendar';
 import FrontPage from './FrontPage';
+import ForgetPassword from './ForgetPassword';
 
 const MainApp = () => {
   return (
     <Router>
       <Switch>
+        <Route path = "/forget-password" component={ForgetPassword}/>
         <Route path="/create-account" component={CreateAccount} />
         <Route path="/login-page" component={Login} />
         <Route path="/Calendar" component={Calendar} /> 
