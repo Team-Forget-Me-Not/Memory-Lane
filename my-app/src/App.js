@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic, faMobileButton, faHouse } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
 
 const App = () => {
@@ -81,6 +81,9 @@ const App = () => {
           <Link to="/create-account">
             <FontAwesomeIcon icon={faPlus} /> Create Account
           </Link>*/}
+          <Link to = "/Front-page">
+            <FontAwesomeIcon icon ={faHouse} />Log out
+          </Link>
           <Link to="/calendar">
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
           </Link>
