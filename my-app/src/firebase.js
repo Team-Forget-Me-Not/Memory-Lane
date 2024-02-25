@@ -1,11 +1,10 @@
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth"
+import { getAuth } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { auth as firebaseuiAuth } from 'firebaseui';
 
 
-//Exports Authentication and Firestore to the rest of the the project 
-export const auth = firebase.auth();
-export const firestore = firebase.firestore();
 
 
 //Firebase configuration 
@@ -18,7 +17,13 @@ const firebaseConfig = {
   appId: "1:951803202921:web:0a5e7c466706b1537301f8"
 };  
 
-//Initializes Firebase, Firestore, and Auth
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app); // This is the correct declaration
 const db = getFirestore(app);
-const auth = getAuth(app);
+const storage = getStorage(app);
+
+// Initialize FirebaseUI
+const ui = new firebaseuiAuth.AuthUI(auth);
+
+// Export the initialized services
+export { app, auth, db, storage, ui };

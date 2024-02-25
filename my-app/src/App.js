@@ -5,6 +5,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
 
+
+
+
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState([]);
   const [currentDate, setCurrentDate] = useState(new Date());
