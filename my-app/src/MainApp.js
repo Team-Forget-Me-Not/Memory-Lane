@@ -7,6 +7,7 @@ import Login from './LoginPage';
 import Calendar from './Calendar';
 import FrontPage from './FrontPage';
 import ForgetPassword from './ForgetPassword';
+import Planner from './Planner';
 
 const MainApp = () => {
   return (
@@ -17,6 +18,7 @@ const MainApp = () => {
         <Route path="/login-page" component={Login} />
         <Route path="/Calendar" component={Calendar} /> 
         <Route path="/Front-page" component={FrontPage} />  
+        <Route path="/Planner" component={Planner} />
         <Route path="/" component={App} />
       
       </Switch>

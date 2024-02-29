@@ -5,6 +5,7 @@ import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic, faMobileButton, faHouse } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
+import Planner from './Planner'; // Import Planner component
 
 // Define the main App component
 const App = () => {
@@ -20,6 +21,10 @@ const App = () => {
 
   // Reference for the video element
   const videoRef = useRef(null);
+
+  // State variables for managing edit mode and edited entry index
+  const [editMode, setEditMode] = useState(false);
+  const [editedIndex, setEditedIndex] = useState(null);
 
   // Function to extract YouTube video ID from a video link
   const getYouTubeVideoId = (url) => {
@@ -41,10 +46,6 @@ const App = () => {
       }
     }
   };
-
-  // State variables for managing edit mode and edited entry index
-  const [editMode, setEditMode] = useState(false);
-  const [editedIndex, setEditedIndex] = useState(null);
 
   // Function to add or update diary entries based on edit mode
   const addEntry = () => {
@@ -121,20 +122,15 @@ const App = () => {
           <h1>Memory Lane</h1>
         </Link>
         <nav>
-          {/* Removed or commented out login and create account button links */}
-          {/*<Link to="/login-page">
-            <FontAwesomeIcon icon={faPlus} /> Login Page
-          </Link>
-          <Link to="/create-account">
-            <FontAwesomeIcon icon={faPlus} /> Create Account
-          </Link>*/}
-          <Link to = "/Front-page">
-            <FontAwesomeIcon icon ={faHouse} />Log out
+          <Link to="/Front-page">
+            <FontAwesomeIcon icon={faHouse} /> Log out
           </Link>
           <Link to="/calendar">
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
           </Link>
-          <FontAwesomeIcon icon={faList} /> Planner
+          <Link to="/planner"> {/* Link to the Planner section */}
+            <FontAwesomeIcon icon={faList} /> Planner
+          </Link>
           <FontAwesomeIcon icon={faTasks} /> Lists
         </nav>
       </header>
