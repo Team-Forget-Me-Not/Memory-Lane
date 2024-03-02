@@ -8,6 +8,7 @@ import Calendar from './Calendar';
 import FrontPage from './FrontPage';
 import ForgetPassword from './ForgetPassword';
 import Planner from './Planner';
+import Profile from './Profile';
 
 const MainApp = () => {
   return (
@@ -19,8 +20,8 @@ const MainApp = () => {
         <Route path="/Calendar" component={Calendar} /> 
         <Route path="/Front-page" component={FrontPage} />  
         <Route path="/Planner" component={Planner} />
+        <Route path="/Profile" component={Profile} />
         <Route path="/" component={App} />
-      
       </Switch>
     </Router>
   );

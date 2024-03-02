@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic, faMobileButton, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic, faMobileButton, faHouse, faUser } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
 import Planner from './Planner'; // Import Planner component
 
@@ -118,20 +118,22 @@ const App = () => {
     <div className="App">
       {/* Header section with navigation links */}
       <header>
-        <Link to="/Front-page">
+          <Link to="/Front-page" style={{ textDecoration: 'none' }}>
           <h1>Memory Lane</h1>
-        </Link>
-        <nav>
-          <Link to="/Front-page">
+          </Link>
+          <nav>
+          <Link to="/Front-page" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faHouse} /> Log out
           </Link>
-          <Link to="/calendar">
+          <Link to="/calendar" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
           </Link>
-          <Link to="/planner"> {/* Link to the Planner section */}
+          <Link to="/planner" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faList} /> Planner
           </Link>
-          <FontAwesomeIcon icon={faTasks} /> Lists
+          <Link to="/profile" style={{ textDecoration: 'none' }}>
+            <FontAwesomeIcon icon={faUser} /> Profile
+          </Link>
         </nav>
       </header>
 
