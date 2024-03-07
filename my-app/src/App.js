@@ -120,9 +120,9 @@ const App = () => {
       <header>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
           <h1>Memory Lane</h1>
-        </Link>
-        <nav>
-          <Link to="/Front-page">
+          </Link>
+          <nav>
+          <Link to="/Front-page" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faHouse} /> Log out
           </Link>
           <Link to="/calendar" style={{ textDecoration: 'none' }}>
@@ -204,7 +204,7 @@ const App = () => {
                     title="music-player"
                     width="100%"
                     height="166"
-                    frameBorder="no"
+                    frameBorder="no"year
                     allow="autoplay; fullscreen"
                     allowFullScreen
                     src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicLink)}`}
