@@ -119,7 +119,7 @@ const App = () => {
       {/* Header section with navigation links */}
       <header>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-          <h1>Memory Lane</h1>
+          <img src="MemoryLane.jpeg" alt="Memory Lane" className="logo-image" />
           </Link>
           <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
@@ -204,7 +204,7 @@ const App = () => {
                     title="music-player"
                     width="100%"
                     height="166"
-                    frameBorder="no"
+                    frameBorder="no"year
                     allow="autoplay; fullscreen"
                     allowFullScreen
                     src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicLink)}`}
