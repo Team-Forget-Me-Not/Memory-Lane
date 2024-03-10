@@ -1,37 +1,66 @@
 import React, { useState } from 'react';
-import './CreateAccount.css'; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faLock, faEnvelope, faArrowRight, faVenusMars } from '@fortawesome/free-solid-svg-icons';
+import { useHistory } from 'react-router-dom';
+import './CreateAccount.css'; // Importing CSS file for styling
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Importing FontAwesomeIcon component
+import { faUser, faLock, faEnvelope, faArrowRight, faVenusMars } from '@fortawesome/free-solid-svg-icons'; // Importing FontAwesome icons
+import { initializeApp } from "firebase/app"; // Importing Firebase initialization function
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Importing Firebase authentication functions
 
+// Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCxGAfivTx5MkI23kLvQMJrCL4CNYwew0Y",
+  authDomain: "memory-lane-8d7b0.firebaseapp.com",
+  databaseURL: "https://memory-lane-8d7b0-default-rtdb.firebaseio.com",
+  projectId: "memory-lane-8d7b0",
+  storageBucket: "memory-lane-8d7b0.appspot.com",
+  messagingSenderId: "951803202921",
+  appId: "1:951803202921:web:0a5e7c466706b1537301f8"
+};
+
+// Initialize Firebase app with the provided configuration
+const app = initializeApp(firebaseConfig);
+
+// Functional component for creating an account
 const CreateAccount = () => {
-  // State variables to manage form input values
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [gender, setGender] = useState('');
+  const history = useHistory(); // Using useHistory hook from react-router-dom for navigation
 
-  // Function to handle account creation and log form data
-  const handleCreateAccount = () => {
-    console.log('Account created:', { firstName, lastName, username, email, password, gender });
+  // State variables for form inputs
+  const [firstName, setFirstName] = useState(''); // State variable for first name input
+  const [lastName, setLastName] = useState(''); // State variable for last name input
+  const [email, setEmail] = useState(''); // State variable for email input
+  const [password, setPassword] = useState(''); // State variable for password input
+  const [confirmPassword, setConfirmPassword] = useState(''); // State variable for confirm password input
+  const [gender, setGender] = useState(''); // State variable for gender input
 
-    // Resetting form input values after account creation
-    setFirstName('');
-    setLastName('');
-    setUsername('');
-    setEmail('');
-    setPassword('');
-    setConfirmPassword('');
-    setGender('');
+  // Function to handle form submission
+  const handleCreateAccount = (e) => {
+    e.preventDefault();
+
+    // Checking if password and confirm password match
+    if (password !== confirmPassword) {
+      console.error("Passwords do not match"); // Logging error if passwords don't match
+      return;
+    }
+
+    // Creating a new user with email and password using Firebase authentication
+    const auth = getAuth();
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        history.push('/app'); // Redirecting to '/app' route after successful account creation
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.error(errorCode, errorMessage); // Logging error details if account creation fails
+      });
   };
 
   return (
     <div className="create-account-page">
       <h1>Create Account</h1>
       <div className="create-account-form">
-        {/* Input field for first name */}
+        {/* Input fields for first name */}
         <div className="input-group">
           <FontAwesomeIcon icon={faUser} />
           <input
@@ -42,7 +71,7 @@ const CreateAccount = () => {
           />
         </div>
 
-        {/* Input field for last name */}
+        {/* Input fields for last name */}
         <div className="input-group">
           <FontAwesomeIcon icon={faUser} />
           <input
@@ -53,7 +82,7 @@ const CreateAccount = () => {
           />
         </div>
 
-        {/* Input field for email */}
+        {/* Input fields for email */}
         <div className="input-group">
           <FontAwesomeIcon icon={faEnvelope} />
           <input
@@ -64,7 +93,7 @@ const CreateAccount = () => {
           />
         </div>
 
-        {/* Input field for password */}
+        {/* Input fields for password */}
         <div className="input-group">
           <FontAwesomeIcon icon={faLock} />
           <input
@@ -75,7 +104,7 @@ const CreateAccount = () => {
           />
         </div>
 
-        {/* Input field for confirming password */}
+        {/* Input fields for confirm password */}
         <div className="input-group">
           <FontAwesomeIcon icon={faLock} />
           <input
@@ -86,7 +115,7 @@ const CreateAccount = () => {
           />
         </div>
 
-        {/* Dropdown for selecting gender */}
+        {/* Input fields for gender */}
         <div className="input-group">
           <FontAwesomeIcon icon={faVenusMars} />
           <select
@@ -100,7 +129,7 @@ const CreateAccount = () => {
           </select>
         </div>
 
-        {/* Button to initiate account creation */}
+        {/* Button to submit the form */}
         <button onClick={handleCreateAccount}>
           <FontAwesomeIcon icon={faArrowRight} />
           Create Account
@@ -110,5 +139,4 @@ const CreateAccount = () => {
   );
 };
 
-// Export the CreateAccount component as the default export
 export default CreateAccount;
