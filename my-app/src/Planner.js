@@ -102,7 +102,7 @@ const Planner = () => {
       </div>
       {/* List of tasks */}
       <div className="task-list">
-        {tasks.map(task => (
+        {tasks.filter(task => sortOption === 'completed' ? task.completed : true).map(task => (
           <div key={task.id} className={`task ${task.completed ? 'completed' : ''}`}>
             {/* Input field for task name */}
             <input
