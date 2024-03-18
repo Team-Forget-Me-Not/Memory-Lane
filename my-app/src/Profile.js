@@ -1,16 +1,20 @@
-import React, { useState } from 'react';
+import React, { useRef,useState } from 'react';
+import { useHistory } from 'react-router-dom/cjs/react-router-dom';
 import './Profile.css';
+import { getStorage, ref, uploadBytes} from 'firebase/storage';
+
+
+const firebaseStorage = getStorage();
 
 const Profile = () => {
   // State variables for profile details and profile picture
   const [username, setUsername] = useState("Monika Asano");
-  const [email, setEmail] = useState("monika.asano@example.com");
   const [location, setLocation] = useState("Earth");
   const [joined, setJoined] = useState("January 2024");
   const [profilePic, setProfilePic] = useState(null); // State for profile picture
   const [bio, setBio] = useState("");
-  const [password, setPassword] = useState("");
 
+  const history = useHistory();
   // Function to handle profile picture upload
   const handleProfilePicChange = (event) => {
     const selectedFile = event.target.files[0]; // Get the selected file
@@ -22,10 +26,6 @@ const Profile = () => {
     setUsername(event.target.value);
   };
 
-  // Function to handle email update
-  const handleEmailChange = (event) => {
-    setEmail(event.target.value);
-  };
 
   // Function to handle location update
   const handleLocationChange = (event) => {
@@ -37,17 +37,33 @@ const Profile = () => {
     setBio(event.target.value);
   };
 
-  // Function to handle password update
-  const handlePasswordChange = (event) => {
-    setPassword(event.target.value);
-  };
 
   // Function to handle profile update
-  const handleProfileUpdate = () => {
+  const handleProfileUpdate = async () => {
+    try{
+      //This will upload the profile picture to the firebase storage
+      let imageURL = profilePic ? await uploadProfilePicture(profilePic) : null;
+      console.log("Profile updated successfully!",{
+        username,
+        location,
+        bio,
+        imageURL
+      });
+      //Redirect the user to the main menu
+      history.push("/");
+    } catch (error){
+      console.error("Error in updating profile: ", error);
+    }
     // Perform profile update logic here
     // For example, send updated profile data to the server
     // This function can also handle updating the profile picture if needed
-    console.log("Profile updated successfully!");
+
+  };
+
+  const uploadProfilePicture = async (file) => {
+    const storageRef = ref(firebaseStorage, `profile_pictures/${file.name}`);
+    await uploadBytes(storageRef, file);
+    return `https://storage.googleapis.com/${firebaseStorage.app.options.storageBucket}/profile_pictures/${file.name}`;
   };
 
   return (
@@ -55,7 +71,7 @@ const Profile = () => {
       {/* Profile header section */}
       <div className="profile-header">
         {/* Profile picture */}
-        <img src={profilePic ? profilePic : "https://via.placeholder.com/150"} alt="Profile" />
+        <img src={profilePic ? URL.createObjectURL(profilePic) : "https://via.placeholder.com/150"} alt="Profile" />
         {/* Profile details form */}
         <div className="profile-details">
           <h2>Edit Profile</h2>
@@ -63,11 +79,6 @@ const Profile = () => {
           <div className="form-group">
             <label htmlFor="username">Username:</label>
             <input type="text" id="username" value={username} onChange={handleUsernameChange} />
-          </div>
-          {/* Email input field */}
-          <div className="form-group">
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" value={email} onChange={handleEmailChange} />
           </div>
           {/* Location input field */}
           <div className="form-group">
@@ -78,11 +89,6 @@ const Profile = () => {
           <div className="form-group">
             <label htmlFor="bio">Bio:</label>
             <textarea id="bio" value={bio} onChange={handleBioChange}></textarea>
-          </div>
-          {/* Password input field */}
-          <div className="form-group">
-            <label htmlFor="password">Password:</label>
-            <input type="password" id="password" value={password} onChange={handlePasswordChange} />
           </div>
           {/* Button to update profile */}
           <button className="update-button" onClick={handleProfileUpdate}>Update Profile</button>
