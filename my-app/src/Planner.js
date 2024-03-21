@@ -47,27 +47,29 @@ const Planner = () => {
     ));
   };
 
+ // Sort tasks based on selected option
+const sortTasks = (option) => {
+  // Update sort option
+  setSortOption(option);
+  // Copy tasks array
+  const sortedTasks = [...tasks];
   // Sort tasks based on selected option
-  const sortTasks = (option) => {
-    // Update sort option
-    setSortOption(option);
-    // Copy tasks array
-    const sortedTasks = [...tasks];
-    // Sort tasks based on selected option
-    switch (option) {
-      case 'priority':
-        sortedTasks.sort((a, b) => a.priority.localeCompare(b.priority));
-        break;
-      case 'completed':
-        sortedTasks.sort((a, b) => a.completed - b.completed);
-        break;
-      default:
-        break;
-    }
-    // Update tasks array with sorted tasks
-    setTasks(sortedTasks);
-  };
-
+  switch (option) {
+    case 'priority':
+      sortedTasks.sort((a, b) => {
+        const priorityValue = { High: 3, Normal: 2, Low: 1 };
+        return priorityValue[b.priority] - priorityValue[a.priority];
+      });
+      break;
+    case 'completed':
+      sortedTasks.sort((a, b) => a.completed - b.completed);
+      break;
+    default:
+      break;
+  }
+  // Update tasks array with sorted tasks
+  setTasks(sortedTasks);
+};
   // JSX rendering
   return (
     <div className="planner">
