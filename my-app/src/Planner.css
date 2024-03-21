@@ -1,106 +1,135 @@
 /* Planner.css */
 
-/* Main Planner Container */
+/* Styles for the main container of the Planner component */
 .planner {
-    background-color: #f9f9f9;
+    max-width: 600px;
+    margin: 0 auto;
     padding: 20px;
+    background-color: #f6f7f9;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* Planner Heading */
-.planner h2 {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for the heading of the Planner component */
+  h2 {
+    font-size: 24px;
+    text-align: center;
     color: #333;
     margin-bottom: 20px;
-}
-
-/* Task Input Section */
-.task-input {
+  }
+  
+  /* Styles for the task input section */
+  .task-input {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
-}
-
-/* Text Input in Task Input Section */
-.task-input input[type="text"] {
+  }
+  
+  /* Styles for the task input fields */
+  .task-input input[type="text"] {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 10px;
+    border: none;
     border-radius: 4px;
     margin-right: 10px;
-}
-
-/* Select Input in Task Input Section */
-.task-input select {
-    padding: 8px;
-    border: 1px solid #ccc;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for the priority select dropdown */
+  .task-input select {
+    padding: 10px;
+    border: none;
     border-radius: 4px;
-    margin-right: 10px;
-}
-
-/* Button in Task Input Section */
-.task-input button {
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for the add task button */
+  .add-button {
     padding: 10px 20px;
-    background-color: #007bff;
-    color: #fff;
+    background-color: #3498db;
+    color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 16px;
-    width: auto;
-}
-
-/* Sort Options Section */
-.sort-options {
+  }
+  
+  /* Styles for the sort options section */
+  .sort-options {
     margin-bottom: 20px;
-}
-
-/* Task List */
-.task-list {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-/* Individual Task */
-.task {
+    text-align: right;
+  }
+  
+  /* Styles for the sorting select dropdown */
+  .sort-options select {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for the task list */
+  .task-list {
+    list-style: none;
+    padding: 0;
+  }
+  
+  /* Styles for each task item */
+  .task {
     display: flex;
     align-items: center;
-    background-color: #fff;
     padding: 10px;
+    background-color: #fff;
     border-radius: 4px;
     margin-bottom: 10px;
-}
-
-/* Completed Tasks */
-.task.completed {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for completed tasks */
+  .task.completed {
     background-color: #f0f0f0;
-}
-
-/* Text Input in Task */
-.task input[type="text"] {
+  }
+  
+  /* Styles for task input fields within task items */
+  .task input[type="text"] {
     flex: 1;
-    padding: 8px;
-    border: 1px solid #ccc;
+    padding: 8px 12px;
+    border: none;
     border-radius: 4px;
-    margin-right: 10px;
-}
-
-/* Select Input in Task */
-.task select {
-    padding: 8px;
-    border: 1px solid #ccc;
+    background-color: #f6f7f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for priority select dropdown within task items */
+  .task select {
+    padding: 8px 12px;
+    border: none;
     border-radius: 4px;
-    margin-right: 10px;
-}
-
-/* Buttons in Task */
-.task button {
-    padding: 6px 12px;
-    color: #fff;
+    background-color: #f6f7f9;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Styles for complete task button and delete task button */
+  .complete-button,
+  .delete-button {
+    padding: 8px 16px;
+    margin-left: 10px;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
-    width: auto;
-}
-
+  }
+  
+  /* Styles for complete task button */
+  .complete-button {
+    background-color: #18A558;
+    color: white;
+  }
+  
+  /* Styles for delete task button */
+  .delete-button {
+    background-color: #e74c3c;
+    color: white;
+  }
+  

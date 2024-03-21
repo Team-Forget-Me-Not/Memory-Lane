@@ -1,5 +1,4 @@
-// Import necessary dependencies and components
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -7,10 +6,14 @@ import { faSave, faCalendarAlt, faPlus, faList, faImages, faTasks, faMusic, faMo
 import Calendar from './Calendar';
 import Planner from './Planner'; // Import Planner component
 
-// Define the main App component
 const App = () => {
-  // State variables for managing diary entries and form inputs
-  const [diaryEntries, setDiaryEntries] = useState([]);
+  // State hooks for managing diary entries and other data
+  const [diaryEntries, setDiaryEntries] = useState(() => {
+    // Load diary entries from localStorage, or return an empty array if not found
+    const storedEntries = localStorage.getItem('diaryEntries');
+    return storedEntries ? JSON.parse(storedEntries) : [];
+  });
+
   const [currentDate, setCurrentDate] = useState(new Date());
   const [entryTitle, setEntryTitle] = useState('');
   const [entryText, setEntryText] = useState('');
@@ -18,21 +21,22 @@ const App = () => {
   const [musicTitle, setMusicTitle] = useState('');
   const [musicLink, setMusicLink] = useState('');
   const [isTextareaExpanded, setIsTextareaExpanded] = useState(false);
-
-  // Reference for the video element
   const videoRef = useRef(null);
-
-  // State variables for managing edit mode and edited entry index
   const [editMode, setEditMode] = useState(false);
   const [editedIndex, setEditedIndex] = useState(null);
 
-  // Function to extract YouTube video ID from a video link
+  // Save diary entries to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+  }, [diaryEntries]);
+
+  // Function to extract YouTube video ID from a URL
   const getYouTubeVideoId = (url) => {
     const match = url.match(/[?&]v=([^&]+)/);
     return match ? match[1] : null;
   };
 
-  // Function to toggle full screen for the video player
+  // Function to toggle full screen mode for the video player
   const toggleFullScreen = () => {
     const videoElement = videoRef.current;
 
@@ -47,7 +51,7 @@ const App = () => {
     }
   };
 
-  // Function to add or update diary entries based on edit mode
+  // Function to add or update a diary entry
   const addEntry = () => {
     const newEntry = {
       date: currentDate.toLocaleDateString(),
@@ -59,18 +63,16 @@ const App = () => {
     };
 
     if (editMode) {
-      // Update existing entry if in edit mode
       const updatedEntries = [...diaryEntries];
       updatedEntries[editedIndex] = newEntry;
       setDiaryEntries(updatedEntries);
       setEditMode(false);
       setEditedIndex(null);
     } else {
-      // Add a new entry if not in edit mode
       setDiaryEntries([...diaryEntries, newEntry]);
     }
 
-    // Reset form inputs and textarea height
+    // Clear input fields and reset state after adding/updating entry
     setEntryTitle('');
     setEntryText('');
     setImage('');
@@ -79,7 +81,7 @@ const App = () => {
     setIsTextareaExpanded(false);
   };
 
-  // Function to populate form inputs for editing an existing entry
+  // Function to edit a diary entry
   const editEntry = (index) => {
     const entryToEdit = diaryEntries[index];
     setEntryTitle(entryToEdit.title);
@@ -91,35 +93,40 @@ const App = () => {
     setEditedIndex(index);
   };
 
-  // Function to delete an entry
+  // Function to delete a diary entry
   const deleteEntry = (index) => {
-    const updatedEntries = [...diaryEntries];
-    updatedEntries.splice(index, 1);
-    setDiaryEntries(updatedEntries);
+    const filteredIndex = diaryEntries.findIndex(entry => entry.date === currentDate.toLocaleDateString());
+    if (filteredIndex !== -1) {
+      const updatedEntries = [...diaryEntries];
+      updatedEntries.splice(filteredIndex, 1);
+      setDiaryEntries(updatedEntries);
+    }
   };
 
-  // Function to handle day click in the calendar
+  // Function to handle click on a day in the calendar
   const handleDayClick = (year, month, day) => {
     setCurrentDate(new Date(year, month, day));
   };
 
-  // Function to expand the textarea height
+  // Function to expand the text area for entry text input
   const expandTextarea = () => {
     setIsTextareaExpanded(true);
   };
 
-  // Function to collapse the textarea height
+  // Function to collapse the text area for entry text input
   const collapseTextarea = () => {
     setIsTextareaExpanded(false);
   };
 
-  // JSX rendering of the main App component
+  // Filter diary entries based on the current date
+  const filteredEntries = diaryEntries.filter(entry => entry.date === currentDate.toLocaleDateString());
+
+  // Render the component
   return (
     <div className="App">
-      {/* Header section with navigation links */}
       <header>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-          <h1>Memory Lane</h1>
+          <img src="MemoryLane.jpeg" alt="Memory Lane" className="logo-image" />
           </Link>
           <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
@@ -137,13 +144,11 @@ const App = () => {
         </nav>
       </header>
 
-      {/* Main section containing quick entry form and diary entries */}
       <section className="main-section">
         {/* Quick entry form */}
         <div className="quick-entry-form">
           <h2>{currentDate.toDateString()}</h2>
           <Calendar currentDate={currentDate} onDayClick={handleDayClick} />
-          {/* Form inputs for entry details */}
           <input
             type="text"
             placeholder="Entry Title"
@@ -158,6 +163,7 @@ const App = () => {
             onBlur={collapseTextarea}
             style={{ height: isTextareaExpanded ? '200px' : '40px' }}
           />
+          {/* Image upload input */}
           <label htmlFor="image-upload" className="image-upload-label">
             <FontAwesomeIcon icon={faImages} /> Upload Image
           </label>
@@ -167,6 +173,7 @@ const App = () => {
             accept="image/*"
             onChange={(e) => setImage(URL.createObjectURL(e.target.files[0]))}
           />
+          {/* Music/Video inputs */}
           <input
             type="text"
             placeholder="Music/Video Title"
@@ -179,51 +186,52 @@ const App = () => {
             value={musicLink}
             onChange={(e) => setMusicLink(e.target.value)}
           />
-          {/* Button to save or update entry */}
+          {/* Button to add or update entry */}
           <button onClick={addEntry}>
             <FontAwesomeIcon icon={faSave} /> {editMode ? 'Update Entry' : 'Save Entry'}
           </button>
         </div>
 
-        {/* Display of existing diary entries */}
+        {/* Display diary entries */}
         <div className="diary-entries">
-          {diaryEntries.map((entry, index) => (
-            <div key={index} className="entry-card">
-              <h3>{entry.date}</h3>
-              <h4>{entry.title}</h4>
-              <p>{entry.text}</p>
-              {/* Display uploaded image if available */}
-              {entry.image && <img src={entry.image} alt="Entry" />}
-              {/* Display music/video section if available */}
-              {entry.musicTitle && entry.musicLink && (
-                <div className="music-section">
-                  <h4>{entry.musicTitle}</h4>
-                  {/* Embed YouTube video player with full-screen option */}
-                  <iframe
-                    ref={videoRef}
-                    title="music-player"
-                    width="100%"
-                    height="166"
-                    frameBorder="no"year
-                    allow="autoplay; fullscreen"
-                    allowFullScreen
-                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicLink)}`}
-                    onClick={toggleFullScreen}
-                  ></iframe>
+          {filteredEntries.length === 0 ? (
+          <p>No entries for this date.</p>
+          ) : (
+            filteredEntries.map((entry, index) => (
+              <div key={index} className="entry-card">
+                <h3>{entry.date}</h3>
+                <h4>{entry.title}</h4>
+                <p>{entry.text}</p>
+                {entry.image && <img src={entry.image} alt="Entry" />}
+                {entry.musicTitle && entry.musicLink && (
+                  <div className="music-section">
+                    <h4>{entry.musicTitle}</h4>
+                    {/* Embedded YouTube video */}
+                    <iframe
+                      ref={videoRef}
+                      title="music-player"
+                      width="100%"
+                      height="166"
+                      frameBorder="no"
+                      allow="autoplay; fullscreen"
+                      allowFullScreen
+                      src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicLink)}`}
+                      onClick={toggleFullScreen}
+                    ></iframe>
+                  </div>
+                )}
+                {/* Edit and delete buttons */}
+                <div>
+                  <button onClick={() => editEntry(index)}>Edit</button>
+                  <button onClick={() => deleteEntry(index)}>Delete</button>
                 </div>
-              )}
-              {/* Buttons to edit or delete the entry */}
-              <div>
-                <button onClick={() => editEntry(index)}>Edit</button>
-                <button onClick={() => deleteEntry(index)}>Delete</button>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
     </div>
   );
 };
 
-// Export the App component as the default export
 export default App;

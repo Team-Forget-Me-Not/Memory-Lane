@@ -16,10 +16,10 @@ const Profile = () => {
 
   const history = useHistory();
   // Function to handle profile picture upload
-  const handleProfilePicChange = (event) => {
-    const selectedFile = event.target.files[0]; // Get the selected file
-    setProfilePic(URL.createObjectURL(selectedFile)); // Set the profile picture to the selected file
-  };
+const handleProfilePicChange = (event) => {
+  const selectedFile = event.target.files[0]; // Get the selected file
+  setProfilePic(selectedFile); // Set the profile picture to the selected file
+};
 
   // Function to handle username update
   const handleUsernameChange = (event) => {
