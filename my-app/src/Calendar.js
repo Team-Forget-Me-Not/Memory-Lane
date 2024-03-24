@@ -1,3 +1,5 @@
+// Calendar.js
+
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Calendar.css';
@@ -36,14 +38,19 @@ const Calendar = ({ currentDate = new Date(), onDayClick }) => {
           </div>
         ))}
         {calendarGrid.map((day, index) => (
-          <Link key={index} to={`/entry/${calendarYear}/${calendarMonth + 1}/${day}`}>
-            <div
-              className={`calendar-day ${day !== null ? "active" : "inactive"} ${day === selectedDay ? "selected" : ""}`}
-              onClick={() => handleDayClick(day)}
-            >
-              {day !== null ? day : ""}
-            </div>
-          </Link>
+          <div
+            key={index}
+            className={`calendar-day ${day !== null ? "active" : "inactive"} ${day === selectedDay ? "selected" : ""}`}
+            onClick={() => handleDayClick(day)}
+          >
+            {day !== null ? (
+              <Link to={`/entry/${calendarYear}/${calendarMonth + 1}/${day}`} onClick={(e) => e.preventDefault()}>
+                {day}
+              </Link>
+            ) : (
+              ""
+            )}
+          </div>
         ))}
       </div>
     );
