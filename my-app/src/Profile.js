@@ -1,65 +1,77 @@
-import React, { useRef,useState } from 'react';
-import { useHistory } from 'react-router-dom/cjs/react-router-dom';
+import React, { useRef, useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { getStorage, ref, uploadBytes } from 'firebase/storage';
+import { getFirestore, doc, setDoc } from 'firebase/firestore';
 import './Profile.css';
-import { getStorage, ref, uploadBytes} from 'firebase/storage';
 
-
+// Initialize Firebase storage and Firestore
 const firebaseStorage = getStorage();
+const firestore = getFirestore();
 
 const Profile = () => {
-  // State variables for profile details and profile picture
+  // State variables for profile details
   const [username, setUsername] = useState("Monika Asano");
   const [location, setLocation] = useState("Earth");
-  const [joined, setJoined] = useState("January 2024");
-  const [profilePic, setProfilePic] = useState(null); // State for profile picture
   const [bio, setBio] = useState("");
+  const [profilePic, setProfilePic] = useState(null); // State for profile picture
+  const [error, setError] = useState(null); // State for error handling
+  const [loading, setLoading] = useState(false); // State for loading indicator
+  const [changesSaved, setChangesSaved] = useState(false); // State to track changes saved
 
   const history = useHistory();
-  // Function to handle profile picture upload
-const handleProfilePicChange = (event) => {
-  const selectedFile = event.target.files[0]; // Get the selected file
-  setProfilePic(selectedFile); // Set the profile picture to the selected file
-};
 
-  // Function to handle username update
+  // Function to handle profile picture change
+  const handleProfilePicChange = (event) => {
+    const selectedFile = event.target.files[0];
+    setProfilePic(selectedFile);
+  };
+
+  // Function to handle username change
   const handleUsernameChange = (event) => {
     setUsername(event.target.value);
   };
 
-
-  // Function to handle location update
+  // Function to handle location change
   const handleLocationChange = (event) => {
     setLocation(event.target.value);
   };
 
-  // Function to handle bio update
+  // Function to handle bio change
   const handleBioChange = (event) => {
     setBio(event.target.value);
   };
 
-
-  // Function to handle profile update
-  const handleProfileUpdate = async () => {
-    try{
-      //This will upload the profile picture to the firebase storage
+  // Function to handle saving changes
+  const handleSaveChanges = async () => {
+    try {
+      setLoading(true);
+      // Upload profile picture if selected
       let imageURL = profilePic ? await uploadProfilePicture(profilePic) : null;
-      console.log("Profile updated successfully!",{
+      // Update profile details in Firestore
+      const profileData = {
         username,
         location,
         bio,
         imageURL
-      });
-      //Redirect the user to the main menu
-      history.push("/");
-    } catch (error){
+      };
+      await setDoc(doc(firestore, 'profiles', 'user_id'), profileData);
+      // Log updated profile details
+      console.log("Profile updated successfully!", profileData);
+      // Set changes saved state
+      setChangesSaved(true);
+      setTimeout(() => {
+        setChangesSaved(false);
+      }, 3000); // Reset changes saved state after 3 seconds
+    } catch (error) {
+      // Handle error during profile update
+      setError("Error updating profile. Please try again later.");
       console.error("Error in updating profile: ", error);
+    } finally {
+      setLoading(false);
     }
-    // Perform profile update logic here
-    // For example, send updated profile data to the server
-    // This function can also handle updating the profile picture if needed
-
   };
 
+  // Function to upload profile picture to Firebase storage
   const uploadProfilePicture = async (file) => {
     const storageRef = ref(firebaseStorage, `profile_pictures/${file.name}`);
     await uploadBytes(storageRef, file);
@@ -90,8 +102,12 @@ const handleProfilePicChange = (event) => {
             <label htmlFor="bio">Bio:</label>
             <textarea id="bio" value={bio} onChange={handleBioChange}></textarea>
           </div>
-          {/* Button to update profile */}
-          <button className="update-button" onClick={handleProfileUpdate}>Update Profile</button>
+          {/* Error message */}
+          {error && <div className="error">{error}</div>}
+          {/* Button to save changes */}
+          <button className="update-button" onClick={handleSaveChanges} disabled={loading || changesSaved}>
+            {loading ? 'Saving...' : (changesSaved ? 'Changes Saved' : 'Save Changes')}
+          </button>
         </div>
       </div>
       {/* Profile options section */}

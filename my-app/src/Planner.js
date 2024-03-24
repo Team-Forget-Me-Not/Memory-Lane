@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Planner.css';
 
 const Planner = () => {
   // State variables
-  const [tasks, setTasks] = useState([]); // Store tasks
+  const [tasks, setTasks] = useState(() => {
+    const storedTasks = localStorage.getItem('tasks');
+    return storedTasks ? JSON.parse(storedTasks) : [];
+  });
   const [taskInput, setTaskInput] = useState(''); // Input for new task
   const [priorityInput, setPriorityInput] = useState(''); // Input for task priority
   const [sortOption, setSortOption] = useState('priority'); // Sorting option
+
+  // Save tasks to localStorage whenever there's a change
+  useEffect(() => {
+    localStorage.setItem('tasks', JSON.stringify(tasks));
+  }, [tasks]);
 
   // Add a new task
   const addTask = () => {
@@ -47,29 +55,30 @@ const Planner = () => {
     ));
   };
 
- // Sort tasks based on selected option
-const sortTasks = (option) => {
-  // Update sort option
-  setSortOption(option);
-  // Copy tasks array
-  const sortedTasks = [...tasks];
   // Sort tasks based on selected option
-  switch (option) {
-    case 'priority':
-      sortedTasks.sort((a, b) => {
-        const priorityValue = { High: 3, Normal: 2, Low: 1 };
-        return priorityValue[b.priority] - priorityValue[a.priority];
-      });
-      break;
-    case 'completed':
-      sortedTasks.sort((a, b) => a.completed - b.completed);
-      break;
-    default:
-      break;
-  }
-  // Update tasks array with sorted tasks
-  setTasks(sortedTasks);
-};
+  const sortTasks = (option) => {
+    // Update sort option
+    setSortOption(option);
+    // Copy tasks array
+    const sortedTasks = [...tasks];
+    // Sort tasks based on selected option
+    switch (option) {
+      case 'priority':
+        sortedTasks.sort((a, b) => {
+          const priorityValue = { High: 3, Normal: 2, Low: 1 };
+          return priorityValue[b.priority] - priorityValue[a.priority];
+        });
+        break;
+      case 'completed':
+        sortedTasks.sort((a, b) => a.completed - b.completed);
+        break;
+      default:
+        break;
+    }
+    // Update tasks array with sorted tasks
+    setTasks(sortedTasks);
+  };
+
   // JSX rendering
   return (
     <div className="planner">
