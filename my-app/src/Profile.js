@@ -14,6 +14,8 @@ const Profile = () => {
   const [location, setLocation] = useState("Earth");
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState(null); // State for profile picture
+  const [relationshipStatus, setRelationshipStatus] = useState(""); // State for relationship status
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff"); // State for background color
   const [error, setError] = useState(null); // State for error handling
   const [loading, setLoading] = useState(false); // State for loading indicator
   const [changesSaved, setChangesSaved] = useState(false); // State to track changes saved
@@ -41,6 +43,16 @@ const Profile = () => {
     setBio(event.target.value);
   };
 
+  // Function to handle relationship status change
+  const handleRelationshipStatusChange = (event) => {
+    setRelationshipStatus(event.target.value);
+  };
+
+  // Function to handle background color change
+  const handleBackgroundColorChange = (event) => {
+    setBackgroundColor(event.target.value);
+  };
+
   // Function to handle saving changes
   const handleSaveChanges = async () => {
     try {
@@ -52,7 +64,9 @@ const Profile = () => {
         username,
         location,
         bio,
-        imageURL
+        relationshipStatus,
+        imageURL,
+        backgroundColor // Include background color in profile data
       };
       await setDoc(doc(firestore, 'profiles', 'user_id'), profileData);
       // Log updated profile details
@@ -79,11 +93,16 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container">
+    <div className="profile-container" style={{ backgroundColor: backgroundColor }}>
       {/* Profile header section */}
       <div className="profile-header">
         {/* Profile picture */}
-        <img src={profilePic ? URL.createObjectURL(profilePic) : "https://via.placeholder.com/150"} alt="Profile" />
+        <div className="profile-picture-container">
+          <label htmlFor="profile-pic" className="profile-picture-label">
+            <img src={profilePic ? URL.createObjectURL(profilePic) : "https://via.placeholder.com/150"} alt="Profile" className="profile-picture" />
+            <input type="file" id="profile-pic" accept="image/*" onChange={handleProfilePicChange} style={{ display: "none" }} />
+          </label>
+        </div>
         {/* Profile details form */}
         <div className="profile-details">
           <h2>Edit Profile</h2>
@@ -102,21 +121,30 @@ const Profile = () => {
             <label htmlFor="bio">Bio:</label>
             <textarea id="bio" value={bio} onChange={handleBioChange}></textarea>
           </div>
+          {/* Relationship status input field */}
+          <div className="form-group">
+            <label htmlFor="relationship">Relationship Status:</label>
+            <select id="relationship" value={relationshipStatus} onChange={handleRelationshipStatusChange}>
+              <option value="">Select</option>
+              <option value="Single">Single - 🔓</option>
+              <option value="In a relationship">In a relationship - ❤️</option>
+              <option value="Engaged">Engaged - 💍</option>
+              <option value="Married">Married - 👰‍♂️</option>
+              <option value="Divorced">Divorced - 💔</option>
+              <option value="Widowed">Widowed - ⚰️</option>
+            </select>
+          </div>
+          {/* Background color picker */}
+          <div className="form-group">
+            <label htmlFor="background-color">Background Color:</label>
+            <input type="color" id="background-color" value={backgroundColor} onChange={handleBackgroundColorChange} />
+          </div>
           {/* Error message */}
           {error && <div className="error">{error}</div>}
           {/* Button to save changes */}
           <button className="update-button" onClick={handleSaveChanges} disabled={loading || changesSaved}>
             {loading ? 'Saving...' : (changesSaved ? 'Changes Saved' : 'Save Changes')}
           </button>
-        </div>
-      </div>
-      {/* Profile options section */}
-      <div className="profile-options">
-        <h3>Profile Options</h3>
-        {/* Option to change profile picture */}
-        <div className="option">
-          <label htmlFor="profile-pic">Change Profile Picture:</label>
-          <input type="file" id="profile-pic" accept="image/*" onChange={handleProfilePicChange} />
         </div>
       </div>
     </div>
