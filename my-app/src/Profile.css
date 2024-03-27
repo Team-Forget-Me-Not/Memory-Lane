@@ -98,3 +98,20 @@
 .option input[type="file"] {
   margin-top: 5px; /* Adds top margin */
 }
+.profile-picture-container {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.profile-picture-label {
+  cursor: pointer;
+}
+
+.profile-picture {
+  width: 100%;
+  height: auto;
+}
+
