@@ -51,6 +51,8 @@ const Profile = () => {
   // Function to handle background color change
   const handleBackgroundColorChange = (event) => {
     setBackgroundColor(event.target.value);
+    // Set background color of the body directly
+    document.body.style.backgroundColor = event.target.value;
   };
 
   // Function to handle saving changes
@@ -93,7 +95,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="profile-container" style={{ backgroundColor: backgroundColor }}>
+    <div className="profile-container">
       {/* Profile header section */}
       <div className="profile-header">
         {/* Profile picture */}
