@@ -79,6 +79,21 @@ const Planner = () => {
     setTasks(sortedTasks);
   };
 
+  // Function to get emoji based on priority
+const getPriorityEmoji = (priority) => {
+  switch (priority) {
+    case 'High':
+      return '🔥🚀';
+    case 'Normal':
+      return '😊✅';
+    case 'Low':
+      return '🟢🐢';
+    default:
+      return '';
+  }
+};
+
+
   // JSX rendering
   return (
     <div className="planner">
@@ -132,6 +147,8 @@ const Planner = () => {
               <option value="Normal">Normal</option>
               <option value="High">High</option>
             </select>
+            {/* Priority Emoji */}
+            <span>{getPriorityEmoji(task.priority)}</span>
             {/* Button to toggle task completion */}
             <button 
               style={{ 

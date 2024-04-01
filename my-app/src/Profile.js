@@ -2,6 +2,8 @@ import React, { useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getFirestore, doc, setDoc } from 'firebase/firestore';
+import { ChromePicker } from 'react-color'; // Import ChromePicker
+import { SketchPicker } from 'react-color'; // Import SketchPicker
 import './Profile.css';
 
 // Initialize Firebase storage and Firestore
@@ -49,10 +51,10 @@ const Profile = () => {
   };
 
   // Function to handle background color change
-  const handleBackgroundColorChange = (event) => {
-    setBackgroundColor(event.target.value);
+  const handleBackgroundColorChange = (color) => {
+    setBackgroundColor(color.hex);
     // Set background color of the body directly
-    document.body.style.backgroundColor = event.target.value;
+    document.body.style.backgroundColor = color.hex;
   };
 
   // Function to handle saving changes
@@ -138,9 +140,9 @@ const Profile = () => {
           </div>
           {/* Background color picker */}
           <div className="form-group">
-            <label htmlFor="background-color">Background Color:</label>
-            <input type="color" id="background-color" value={backgroundColor} onChange={handleBackgroundColorChange} />
-          </div>
+  <label htmlFor="background-color">Background Color:</label>
+  <SketchPicker color={backgroundColor} onChange={handleBackgroundColorChange} />
+</div>
           {/* Error message */}
           {error && <div className="error">{error}</div>}
           {/* Button to save changes */}
