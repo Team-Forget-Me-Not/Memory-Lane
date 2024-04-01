@@ -9,15 +9,15 @@
 /* Styles for the profile header section */
 .profile-header {
   display: flex; /* Uses flexbox for layout */
-  align-items: center; /* Aligns items vertically */
+  align-items:flex-start; /* Aligns items vertically */
 }
 
 /* Styling for the profile picture */
 .profile-header img {
   width: 150px; /* Sets width */
   height: 150px; /* Sets height */
-  border-radius: 50%; /* Makes the image round */
-  margin-right: 20px; /* Adds space to the right */
+  border-radius: 60%; /* Makes the image round */
+  margin-right: 60px; /* Adds space to the right */
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds shadow effect */
 }
 
