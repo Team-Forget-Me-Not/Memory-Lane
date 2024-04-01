@@ -2,23 +2,22 @@ import React, { useState } from "react";
 import './LoginPage.css';
 import { useHistory } from 'react-router-dom';
 import { Link } from 'react-router-dom';
+import firebase from "./firebase";
 import { initializeApp } from "firebase/app";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 // Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyCxGAfivTx5MkI23kLvQMJrCL4CNYwew0Y",
-    authDomain: "memory-lane-8d7b0.firebaseapp.com",
-    databaseURL: "https://memory-lane-8d7b0-default-rtdb.firebaseio.com",
-    projectId: "memory-lane-8d7b0",
-    storageBucket: "memory-lane-8d7b0.appspot.com",
-    messagingSenderId: "951803202921",
-    appId: "1:951803202921:web:0a5e7c466706b1537301f8"
-  };
+// const firebaseConfig = {
+//     apiKey: "AIzaSyCxGAfivTx5MkI23kLvQMJrCL4CNYwew0Y",
+//     authDomain: "memory-lane-8d7b0.firebaseapp.com",
+//     databaseURL: "https://memory-lane-8d7b0-default-rtdb.firebaseio.com",
+//     projectId: "memory-lane-8d7b0",
+//     storageBucket: "memory-lane-8d7b0.appspot.com",
+//     messagingSenderId: "951803202921",
+//     appId: "1:951803202921:web:0a5e7c466706b1537301f8"
+//   };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 
 const Login = () => {
     // State variables to manage email, password, error, and confirmation messages
@@ -26,6 +25,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [confirmMessage, setConfirmMessage] = useState(null);
+    var uid;
 
     // Use the useHistory hook to navigate to different pages
     const history = useHistory();
@@ -35,9 +35,11 @@ const handleSignIn = async (e) => {
     e.preventDefault(); // Prevent default form submission behavior
     try {
         // Authenticate user with Firebase
-        await signInWithEmailAndPassword(auth, email, password);
+        await firebase.auth().signInWithEmailAndPassword(email, password);
         // Display a success message
         setConfirmMessage('Sign-in successful!');
+        uid = firebase.auth().currentUser.uid;
+        console.log('Login successful')
         // Use history to redirect to the homepage
         history.push('/');
     } catch (error) {
