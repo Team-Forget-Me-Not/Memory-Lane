@@ -72,6 +72,10 @@ const CreateAccount = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();//Prevent the form submitting that refreshes the page
+    if(formData.password !== formData.confirmPassword){
+      alert("Passwords do not match!");
+      return;
+    }
     history.push('/app');
     //Access all the form data as an object in 'formData' state variable
     console.log(formData)
