@@ -24,10 +24,16 @@ const App = () => {
   const videoRef = useRef(null);
   const [editMode, setEditMode] = useState(false);
   const [editedIndex, setEditedIndex] = useState(null);
+  const [error, setError] = useState(null);
 
   // Save diary entries to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+    try {
+      localStorage.setItem('diaryEntries', JSON.stringify(diaryEntries));
+    } catch (error) {
+      console.error('Error saving diary entries to localStorage:', error);
+      setError('Error saving diary entries. Please try again later.');
+    }
   }, [diaryEntries]);
 
   // Function to extract YouTube video ID from a URL
@@ -53,31 +59,68 @@ const App = () => {
 
   // Function to add or update a diary entry
   const addEntry = () => {
-    const newEntry = {
-      date: currentDate.toLocaleDateString(),
-      title: entryTitle,
-      text: entryText,
-      image: image,
-      musicTitle: musicTitle,
-      musicLink: musicLink,
-    };
+    try {
+      // Validate inputs
+      if (!validateInputs()) {
+        throw new Error('Invalid input data');
+      }
 
-    if (editMode) {
-      const updatedEntries = [...diaryEntries];
-      updatedEntries[editedIndex] = newEntry;
-      setDiaryEntries(updatedEntries);
-      setEditMode(false);
-      setEditedIndex(null);
-    } else {
-      setDiaryEntries([...diaryEntries, newEntry]);
+      const newEntry = {
+        date: currentDate.toLocaleDateString(),
+        title: entryTitle,
+        text: entryText,
+        image: image,
+        musicTitle: musicTitle,
+        musicLink: musicLink,
+      };
+
+      if (editMode) {
+        const updatedEntries = [...diaryEntries];
+        updatedEntries[editedIndex] = newEntry;
+        setDiaryEntries(updatedEntries);
+        setEditMode(false);
+        setEditedIndex(null);
+      } else {
+        setDiaryEntries([...diaryEntries, newEntry]);
+      }
+
+      // Clear input fields and reset state after adding/updating entry
+      resetInputs();
+    } catch (error) {
+      console.error('Error adding/updating entry:', error);
+      setError('Error adding/updating entry. Please try again.');
     }
+  };
 
-    // Clear input fields and reset state after adding/updating entry
+  // Function to validate user inputs
+  const validateInputs = () => {
+    // Perform validation checks here
+    // Return true if inputs are valid, false otherwise
+    return true;
+  };
+
+  // Function to reset input fields and state
+  const resetInputs = () => {
     setEntryTitle('');
     setEntryText('');
     setImage('');
     setMusicTitle('');
     setMusicLink('');
+    setIsTextareaExpanded(false);
+  };
+
+  // Function to handle click on a day in the calendar
+  const handleDayClick = (year, month, day) => {
+    setCurrentDate(new Date(year, month, day));
+  };
+
+  // Function to expand the text area for entry text input
+  const expandTextarea = () => {
+    setIsTextareaExpanded(true);
+  };
+
+  // Function to collapse the text area for entry text input
+  const collapseTextarea = () => {
     setIsTextareaExpanded(false);
   };
 
@@ -95,27 +138,17 @@ const App = () => {
 
   // Function to delete a diary entry
   const deleteEntry = (index) => {
-    const filteredIndex = diaryEntries.findIndex(entry => entry.date === currentDate.toLocaleDateString());
-    if (filteredIndex !== -1) {
-      const updatedEntries = [...diaryEntries];
-      updatedEntries.splice(filteredIndex, 1);
-      setDiaryEntries(updatedEntries);
+    try {
+      const filteredIndex = diaryEntries.findIndex(entry => entry.date === currentDate.toLocaleDateString());
+      if (filteredIndex !== -1) {
+        const updatedEntries = [...diaryEntries];
+        updatedEntries.splice(filteredIndex, 1);
+        setDiaryEntries(updatedEntries);
+      }
+    } catch (error) {
+      console.error('Error deleting entry:', error);
+      setError('Error deleting entry. Please try again.');
     }
-  };
-
-  // Function to handle click on a day in the calendar
-  const handleDayClick = (year, month, day) => {
-    setCurrentDate(new Date(year, month, day));
-  };
-
-  // Function to expand the text area for entry text input
-  const expandTextarea = () => {
-    setIsTextareaExpanded(true);
-  };
-
-  // Function to collapse the text area for entry text input
-  const collapseTextarea = () => {
-    setIsTextareaExpanded(false);
   };
 
   // Filter diary entries based on the current date
@@ -149,11 +182,13 @@ const App = () => {
         <div className="quick-entry-form">
           <h2>{currentDate.toDateString()}</h2>
           <Calendar currentDate={currentDate} onDayClick={handleDayClick} />
+          {error && <p style={{ color: 'red' }}>{error}</p>}
           <input
             type="text"
             placeholder="Entry Title"
             value={entryTitle}
             onChange={(e) => setEntryTitle(e.target.value)}
+            style={{ fontSize: '1.5em', marginBottom: '10px', padding: '5px' }}
           />
           <textarea
             placeholder="Write your entry here..."
@@ -161,10 +196,10 @@ const App = () => {
             onChange={(e) => setEntryText(e.target.value)}
             onFocus={expandTextarea}
             onBlur={collapseTextarea}
-            style={{ height: isTextareaExpanded ? '200px' : '40px' }}
+            style={{ fontSize: '1.2em', minHeight: '100px', padding: '5px', marginBottom: '10px' }}
           />
           {/* Image upload input */}
-          <label htmlFor="image-upload" className="image-upload-label">
+          <label htmlFor="image-upload" className="image-upload-label" style={{ marginBottom: '10px', display: 'block', fontSize: '1.2em', color: '#333' }}>
             <FontAwesomeIcon icon={faImages} /> Upload Image
           </label>
           <input
@@ -172,6 +207,7 @@ const App = () => {
             type="file"
             accept="image/*"
             onChange={(e) => setImage(URL.createObjectURL(e.target.files[0]))}
+            style={{ display: 'none' }}
           />
           {/* Music/Video inputs */}
           <input
@@ -179,33 +215,35 @@ const App = () => {
             placeholder="Music/Video Title"
             value={musicTitle}
             onChange={(e) => setMusicTitle(e.target.value)}
+            style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
           />
           <input
             type="text"
             placeholder="Music/Video Link"
             value={musicLink}
             onChange={(e) => setMusicLink(e.target.value)}
+            style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
           />
           {/* Button to add or update entry */}
-          <button onClick={addEntry}>
+          <button onClick={addEntry} style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
             <FontAwesomeIcon icon={faSave} /> {editMode ? 'Update Entry' : 'Save Entry'}
           </button>
         </div>
 
         {/* Display diary entries */}
-        <div className="diary-entries">
+        <div className="diary-entries" style={{ marginTop: '30px' }}>
           {filteredEntries.length === 0 ? (
-          <p>No entries for this date.</p>
+            <p style={{ fontSize: '1.2em', color: '#777' }}>No entries for this date.</p>
           ) : (
             filteredEntries.map((entry, index) => (
-              <div key={index} className="entry-card">
-                <h3>{entry.date}</h3>
-                <h4>{entry.title}</h4>
-                <p>{entry.text}</p>
-                {entry.image && <img src={entry.image} alt="Entry" />}
+              <div key={index} className="entry-card" style={{ border: '1px solid #ddd', borderRadius: '5px', marginBottom: '20px', padding: '15px' }}>
+                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
+                <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
+                <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
+                {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px' }} />}
                 {entry.musicTitle && entry.musicLink && (
                   <div className="music-section">
-                    <h4>{entry.musicTitle}</h4>
+                    <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.musicTitle}</h4>
                     {/* Embedded YouTube video */}
                     <iframe
                       ref={videoRef}
@@ -217,13 +255,14 @@ const App = () => {
                       allowFullScreen
                       src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicLink)}`}
                       onClick={toggleFullScreen}
+                      style={{ borderRadius: '5px' }}
                     ></iframe>
                   </div>
                 )}
                 {/* Edit and delete buttons */}
                 <div>
-                  <button onClick={() => editEntry(index)}>Edit</button>
-                  <button onClick={() => deleteEntry(index)}>Delete</button>
+                  <button onClick={() => editEntry(index)} style={{ fontSize: '1em', padding: '5px 10px', marginRight: '10px', backgroundColor: '#28a745', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Edit</button>
+                  <button onClick={() => deleteEntry(index)} style={{ fontSize: '1em', padding: '5px 10px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>Delete</button>
                 </div>
               </div>
             ))
