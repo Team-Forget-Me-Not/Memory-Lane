@@ -1,26 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import './ForgetPassword.css'; // Importing CSS styles
-import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { sendPasswordResetEmail } from "firebase/auth";
 import { useHistory } from "react-router-dom"; // Importing useHistory hook for navigation
 import { database } from "./FirebaseConfig";
-
 // Functional component for ForgetPassword
 function ForgetPassword (){
-    // const auth = getAuth(firebase); //get the auth object from firebase
-
-    // const history = useHistory();
-    // const handleSubmit = async(e) =>{
-    //     e.preventDefault();
-    //     const emailVal = e.target.email.value;
-        
-    //     try{
-    //         await sendPasswordResetEmail(auth, emailVal);
-    //         alert("Check your email!");
-    //         history.push('/login-page')
-    //     }catch(error){
-    //         alert(error.code);
-    //     }
-    // };
+ 
     const history = useHistory();
     const handleSubmit = async(e)=>{
         e.preventDefault();
@@ -32,6 +17,24 @@ function ForgetPassword (){
             alert(err.code);
         })
     }
+    // const handleSubmit = async(e)=>{
+    //     e.preventDefault();
+    //     try{
+    //         await sendPasswordResetEmail(getAuth(), getAuth().currentUser.email);
+    //         alert("Check your email for password reset instructions.");
+
+    //         //Update firestore document with new password and confirmpassword
+    //         const currentUserEmail = getAuth().currentUser.email;
+    //         await db.collection("Users").doc(currentUserEmail).update({
+    //             passwordResetRequested: true,
+    //         });
+
+    //         history('/login-page');
+    //     }catch(error){
+    //         alert(error.code);
+    //     }
+    // };
+
     // JSX returned by the component
     return (
         <div className="mainContainer">
