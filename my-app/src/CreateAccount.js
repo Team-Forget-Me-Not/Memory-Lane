@@ -8,32 +8,11 @@ import { faUser, faLock, faEnvelope, faArrowRight, faVenusMars } from '@fortawes
 import { initializeApp } from "firebase/app"; // Importing Firebase initialization function
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth"; // Importing Firebase authentication functions
 
-//Firebase configuration
-// const firebaseConfig = {
-//   apiKey: "AIzaSyCxGAfivTx5MkI23kLvQMJrCL4CNYwew0Y",
-//   authDomain: "memory-lane-8d7b0.firebaseapp.com",
-//   databaseURL: "https://memory-lane-8d7b0-default-rtdb.firebaseio.com",
-//   projectId: "memory-lane-8d7b0",
-//   storageBucket: "memory-lane-8d7b0.appspot.com",
-//   messagingSenderId: "951803202921",
-//   appId: "1:951803202921:web:0a5e7c466706b1537301f8"
-// };
-
-// const app = initializeApp(firebaseConfig);
-// const db = getFirestore(app);
 
 // Functional component for creating an account
 const CreateAccount = () => {
   const db = firebase.firestore();
   const history = useHistory(); // Using useHistory hook from react-router-dom for navigation
-  // State variables for form inputs
-  // const [firstName, setFirstName] = useState(''); // State variable for first name input
-  // const [lastName, setLastName] = useState(''); // State variable for last name input
-  // const [email, setEmail] = useState(''); // State variable for email input
-  // const [password, setPassword] = useState(''); // State variable for password input
-  // const [confirmPassword, setConfirmPassword] = useState(''); // State variable for confirm password input
-  // const [gender, setGender] = useState(''); // State variable for gender input
-  //Storing form data with User's fields
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -51,23 +30,6 @@ const CreateAccount = () => {
     }));
   };
 
-
-    
-
-    // // Checking if password and confirm password match
-
-    // Creating a new user with email and password using Firebase authentication
-    // const auth = getAuth();
-    // createUserWithEmailAndPassword(auth, email, password)
-    //   .then((userCredential) => {
-    //     const user = userCredential.user;
-    //     history.push('/app'); // Redirecting to '/app' route after successful account creation
-    //   })
-    //   .catch((error) => {
-    //     const errorCode = error.code;
-    //     const errorMessage = error.message;
-    //     console.error(errorCode, errorMessage); // Logging error details if account creation fails
-    //   });
 
 
   const handleSubmit = (event) => {
@@ -97,8 +59,17 @@ const CreateAccount = () => {
         //Use uid as document id in the firestore database
         const docRef = db.collection('Users').doc(userUid);
 
+        //Create a new object with the fields to be added to Firestore
+        const userData = {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          gender: formData.gender,
+          userName: formData.userName
+        };
+
         //Add a new document to Firestore
-        docRef.set(formData)
+        docRef.set(userData)
         .then(() =>{
           if(userUid){
             //alert when registration is successful
