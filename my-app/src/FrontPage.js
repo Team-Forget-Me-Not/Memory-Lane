@@ -21,6 +21,11 @@ const FrontPage = () => {
           Create Account
         </Link>
       </div>
+
+      {/* Slogan */}
+      <div className="slogan-container">
+        <p className="slogan-text">Journey through the heart of memories</p>
+      </div>
     </div>
   );
 };

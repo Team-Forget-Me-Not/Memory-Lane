@@ -10,17 +10,40 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
   
-  /* Styles for the heading of the Planner component */
-  h2 {
-    font-size: 24px;
-    text-align: center;
-    color: #333;
-    margin-bottom: 20px;
-  }
+  /* Styles for the planner heading */
+.planner h2 {
+  font-size: 36px; /* Set the font size */
+  font-weight: bold; /* Set the font weight to bold */
+  color: #3498db; /* Set the text color */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Add a text shadow for better visibility */
+  margin-bottom: 20px; /* Add some bottom margin for spacing */
+  position: relative; /* Position relative for absolute positioning of pseudo-elements */
+}
+
+/* Pseudo-element to create an underline effect */
+.planner h2:before {
+  content: ''; /* Add content for the pseudo-element */
+  position: absolute; /* Position absolute to place the element relative to its parent */
+  width: 100%; /* Set the width to 100% */
+  height: 2px; /* Set the height of the underline */
+  background-color: #3498db; /* Set the color of the underline */
+  bottom: -8px; /* Position the underline below the text */
+  left: 0; /* Align the underline with the left edge of the parent */
+  border-radius: 2px; /* Add border-radius for rounded corners */
+}
+
+/* Pseudo-element to add a decorative icon */
+.planner h2:after {
+  content: '🗓'; /* Add content for the pseudo-element */
+  position: absolute; /* Position absolute to place the element relative to its parent */
+  font-size: 36px; /* Set the font size of the icon */
+  top: -6px; /* Position the icon above the text */
+  right: -40px; /* Position the icon to the right of the text */
+}
   
   /* Styles for the task input section */
   .task-input {
-    display: flex;
+    display: flex; 
     align-items: center;
     margin-bottom: 20px;
   }

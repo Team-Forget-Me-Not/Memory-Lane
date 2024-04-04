@@ -8,7 +8,7 @@
   text-align: center;
   margin-top: 0;
   background-image: url('/public/MemoryLane.jpeg'); /* Background image for the front page */
-  background-size: contain;
+  background-size: contain; /* Cover the entire container */
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh; /* Full viewport height */
@@ -34,7 +34,7 @@ h2 {
 .create-account-button {
   display: inline-block;
   padding: 10px 20px;
-  margin: 0 10px;
+  margin: 10px;
   text-decoration: none;
   color: #fff; /* White text color */
   background-color: #ff5a5a; /* Reddish-pink button color */
@@ -49,3 +49,31 @@ h2 {
 .create-account-button:hover {
   background-color: #e04b4b; /* Slightly darker shade for hover effect */
 }
+
+/* Styles for the slogan */
+.slogan-container {
+  position: absolute;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slogan-text {
+  font-size: 24px; /* Adjust the font size as needed */
+  font-style: italic; /* Italicize the slogan text */
+  color: #555; /* Adjust the color as needed */
+  text-transform: capitalize; /* Proper capitalization */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+  animation: glow 2s ease-in-out infinite alternate; /* Add animation */
+}
+
+/* Animation for the slogan text */
+@keyframes glow {
+  from {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  to {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+  }
+}
+
