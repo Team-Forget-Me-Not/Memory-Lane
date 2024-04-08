@@ -1,0 +1,88 @@
+/* Styles for the create account page container */
+.create-account-page {
+  text-align: center;
+  position: relative; /* Establishing relative positioning for child elements */
+}
+
+/* Background images for the left and right sides of the container */
+.create-account-page::before,
+.create-account-page::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 50%;
+  background-image: url('/public/diary.png'); /* Background image for the left and right sides */
+  background-repeat: repeat-y;
+  background-size: 50%;
+}
+
+/* Style adjustments for the left background */
+.create-account-page::before {
+  left: 0;
+  background-position: left;
+}
+
+/* Style adjustments for the right background */
+.create-account-page::after {
+  right: 0;
+  background-position: right;
+}
+
+/* Styles for the create account form */
+.create-account-form {
+  display: inline-block;
+  text-align: left;
+  width: 400px;
+  padding: 20px;
+  background-color: #7fd9ff; /* Light blue background color */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+  position: relative; /* Maintain relative positioning for child elements within the form */
+  z-index: 1; /* Ensure the form is on top of the background images */
+}
+
+/* Styles for the h1 heading inside the create account form */
+h1 {
+  font-size: 35px;
+  color: #f76c6c; /* Reddish-pink text color */
+}
+
+/* Styles for input groups (e.g., first name, last name) */
+.input-group {
+  margin-bottom: 20px;
+}
+
+/* Styles for input and select elements inside an input group */
+.input-group input,
+.input-group select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #ffcc5c; /* Light orange border color */
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+/* Styles for the button group (e.g., create account button) - Note: This class isn't used in the provided code */
+.button-group {
+  text-align: center;
+}
+
+/* Styles for buttons */
+button {
+  width: 100%;
+  padding: 10px;
+  background-color:#ff5a5a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Hover effect for buttons */
+button:hover {
+  background-color: #3b6688; /* Darker blue on hover */
+}

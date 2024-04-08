@@ -1,0 +1,52 @@
+.calendar {
+  width: 600px; /* Adjust width as needed */
+  font-family: Arial, sans-serif;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+}
+
+.day-header {
+  background-color: #f0f0f0;
+  padding: 10px;
+  text-align: center;
+}
+.calendar-day {
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  border: 1px solid #ccc; /* Add border */
+  width: 40px; /* Set width to create a square */
+  height: 40px; /* Set height to create a square */
+  line-height: 40px; /* Center text vertically */
+  border-radius: 5px; /* Add some border-radius for rounded corners */
+}
+
+
+.calendar-day.active:hover {
+  background-color: #e0e0e0;
+}
+
+.calendar-day.selected {
+  background-color: #ffcccc; /* Adjust color as needed */
+}
+
+.calendar-day.inactive {
+  background-color: #f9f9f9;
+  cursor: default;
+}
+
+button {
+  margin: 5px;
+  padding: 8px 16px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+h2 {
+  margin: 10px 0;
+  text-align: center;
+}

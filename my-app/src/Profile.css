@@ -1,0 +1,118 @@
+/* Styles for the profile container */
+.profile-container {
+  max-width: 600px; /* Sets maximum width */
+  margin: 0 auto; /* Centers the container horizontally */
+  padding: 40px; /* Adds padding */
+  background-color: #f9f9f9; /* Light gray background */
+}
+
+/* Styles for the profile header section */
+.profile-header {
+  display: flex; /* Uses flexbox for layout */
+  align-items:flex-start; /* Aligns items vertically */
+}
+
+/* Styling for the profile picture */
+.profile-header img {
+  width: 150px; /* Sets width */
+  height: 150px; /* Sets height */
+  border-radius: 60%; /* Makes the image round */
+  margin-right: 60px; /* Adds space to the right */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Adds shadow effect */
+}
+
+/* Styling for the profile details form */
+.profile-details {
+  flex: 1; /* Allows flex-grow, taking remaining space */
+}
+
+/* Styling for headings within the profile details section */
+.profile-details h2 {
+  margin-bottom: 20px; /* Adds bottom margin */
+  color: #333; /* Sets text color */
+}
+
+/* Styling for form groups */
+.form-group {
+  margin-bottom: 20px; /* Adds bottom margin */
+}
+
+/* Styling for labels within form groups */
+.form-group label {
+  display: block; /* Makes labels block-level elements */
+  font-weight: bold; /* Sets font weight to bold */
+  margin-bottom: 8px; /* Adds bottom margin */
+  color: #333; /* Sets text color */
+}
+
+/* Styling for input fields within form groups */
+.form-group input,
+.form-group textarea {
+  width: 100%; /* Sets width to 100% of the container */
+  padding: 12px; /* Adds padding */
+  border: 1px solid #ccc; /* Sets border color and style */
+  border-radius: 4px; /* Adds border radius */
+  box-sizing: border-box; /* Ensures padding and border are included in the width */
+}
+
+/* Styling for the update button */
+.update-button {
+  background-color: #007bff; /* Sets background color */
+  color: #fff; /* Sets text color */
+  border: none; /* Removes border */
+  padding: 12px 24px; /* Adds padding */
+  border-radius: 4px; /* Adds border radius */
+  cursor: pointer; /* Sets cursor to pointer */
+  transition: background-color 0.3s; /* Smooth transition on hover */
+}
+
+/* Hover effect for the update button */
+.update-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Styling for the profile options section */
+.profile-options {
+  margin-top: 30px; /* Adds top margin */
+}
+
+/* Styling for headings within profile options */
+.profile-options h3 {
+  margin-bottom: 15px; /* Adds bottom margin */
+  color: #333; /* Sets text color */
+}
+
+/* Styling for individual options within profile options */
+.option {
+  margin-bottom: 20px; /* Adds bottom margin */
+}
+
+/* Styling for labels within individual options */
+.option label {
+  display: block; /* Makes labels block-level elements */
+  font-weight: bold; /* Sets font weight to bold */
+  color: #333; /* Sets text color */
+}
+
+/* Styling for file inputs within individual options */
+.option input[type="file"] {
+  margin-top: 5px; /* Adds top margin */
+}
+.profile-picture-container {
+  width: 150px;
+  height: 150px;
+  overflow: hidden;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.profile-picture-label {
+  cursor: pointer;
+}
+
+.profile-picture {
+  width: 100%;
+  height: auto;
+}
+ 
+

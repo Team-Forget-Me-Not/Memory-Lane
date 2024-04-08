@@ -1,0 +1,79 @@
+/* Styles for the main container of the front page */
+.front-page-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  margin-top: 0;
+  background-image: url('/public/MemoryLane.jpeg'); /* Background image for the front page */
+  background-size: contain; /* Cover the entire container */
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh; /* Full viewport height */
+  color: #fff; /* White text color */
+  background-color: #c4dacf; /* Background color for fallback */
+}
+
+/* Styles for the content wrapper inside the main container */
+.content-wrapper {
+  position: relative;
+  z-index: 1; /* Ensure content appears above the pseudo-elements */
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+/* Additional styles for the title */
+h2 {
+  margin-bottom: 20px; /* Margin below the title */
+}
+
+/* Styles for the login and create account buttons */
+.login-button,
+.create-account-button {
+  display: inline-block;
+  padding: 10px 20px;
+  margin: 10px;
+  text-decoration: none;
+  color: #fff; /* White text color */
+  background-color: #ff5a5a; /* Reddish-pink button color */
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Hover effect for login and create account buttons */
+.login-button:hover,
+.create-account-button:hover {
+  background-color: #e04b4b; /* Slightly darker shade for hover effect */
+}
+
+/* Styles for the slogan */
+.slogan-container {
+  position: absolute;
+  bottom: 20px; 
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slogan-text {
+  font-size: 24px; /* Adjust the font size as needed */
+  font-style: italic; /* Italicize the slogan text */
+  color: #555; /* Adjust the color as needed */
+  text-transform: capitalize; /* Proper capitalization */
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Add shadow effect */
+  animation: glow 2s ease-in-out infinite alternate; /* Add animation */
+}
+
+/* Animation for the slogan text */
+@keyframes glow {
+  from {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  }
+  to {
+    text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.8);
+  }
+}
+
