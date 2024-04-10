@@ -1,19 +1,20 @@
-import React, { useRef, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getStorage, ref, uploadBytes } from 'firebase/storage';
-import { getFirestore, doc, setDoc } from 'firebase/firestore';
-import { ChromePicker } from 'react-color'; // Import ChromePicker
-import { SketchPicker } from 'react-color'; // Import SketchPicker
+import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
+import { SketchPicker } from 'react-color';
 import './Profile.css';
 
 // Initialize Firebase storage and Firestore
 const firebaseStorage = getStorage();
 const firestore = getFirestore();
 
+
+
 const Profile = () => {
   // State variables for profile details
-  const [username, setUsername] = useState("Monika Asano");
-  const [location, setLocation] = useState("Earth");
+  const [username, setUsername] = useState("");
+  const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
   const [profilePic, setProfilePic] = useState(null); // State for profile picture
   const [relationshipStatus, setRelationshipStatus] = useState(""); // State for relationship status
@@ -23,6 +24,51 @@ const Profile = () => {
   const [changesSaved, setChangesSaved] = useState(false); // State to track changes saved
 
   const history = useHistory();
+
+  // Function to fetch profile data from Firestore and store it in localStorage
+  const fetchProfileData = async () => {
+    try {
+      setLoading(true);
+      const docRef = doc(collection(firestore, 'profiles'));
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setUsername(data.username);
+        setLocation(data.location);
+        setBio(data.bio);
+        setRelationshipStatus(data.relationshipStatus);
+        setBackgroundColor(data.backgroundColor);
+        // You can also set the profile picture here if needed
+
+        // Store profile data in localStorage
+        localStorage.setItem('profileData', JSON.stringify(data));
+      } else {
+        console.log("No such document!");
+      }
+    } catch (error) {
+      setError("Error fetching profile data. Please try again later.");
+      console.error("Error fetching profile data: ", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    // Check if profile data exists in localStorage
+    const storedProfileData = localStorage.getItem('profileData');
+    if (storedProfileData) {
+      const data = JSON.parse(storedProfileData);
+      setUsername(data.username);
+      setLocation(data.location);
+      setBio(data.bio);
+      setRelationshipStatus(data.relationshipStatus);
+      setBackgroundColor(data.backgroundColor);
+      // You can also set the profile picture here if needed
+    } else {
+      // Fetch profile data from Firestore
+      fetchProfileData();
+    }
+  }, []); // Fetch profile data when the component mounts
 
   // Function to handle profile picture change
   const handleProfilePicChange = (event) => {
@@ -61,27 +107,38 @@ const Profile = () => {
   const handleSaveChanges = async () => {
     try {
       setLoading(true);
+      let imageURL = null;
+
       // Upload profile picture if selected
-      let imageURL = profilePic ? await uploadProfilePicture(profilePic) : null;
-      // Update profile details in Firestore
+      if (profilePic) {
+        imageURL = await uploadProfilePicture(profilePic);
+      }
+
+      // Profile data to save
       const profileData = {
         username,
         location,
         bio,
         relationshipStatus,
-        imageURL,
-        backgroundColor // Include background color in profile data
+        imageURL, // Include download URL of profile picture
+        backgroundColor
       };
-      await setDoc(doc(firestore, 'profiles', 'user_id'), profileData);
-      // Log updated profile details
+
+      // Add a new document with a generated id in 'profiles' collection
+      const docRef = doc(collection(firestore, 'profiles'));
+      await setDoc(docRef, profileData);
+
+      console.log("Profile created with ID: ", docRef.id);
       console.log("Profile updated successfully!", profileData);
-      // Set changes saved state
+
       setChangesSaved(true);
       setTimeout(() => {
         setChangesSaved(false);
-      }, 3000); // Reset changes saved state after 3 seconds
+      }, 3000);
+
+      // Update stored profile data in localStorage
+      localStorage.setItem('profileData', JSON.stringify(profileData));
     } catch (error) {
-      // Handle error during profile update
       setError("Error updating profile. Please try again later.");
       console.error("Error in updating profile: ", error);
     } finally {
@@ -140,9 +197,9 @@ const Profile = () => {
           </div>
           {/* Background color picker */}
           <div className="form-group">
-  <label htmlFor="background-color">Background Color:</label>
-  <SketchPicker color={backgroundColor} onChange={handleBackgroundColorChange} />
-</div>
+            <label htmlFor="background-color">Background Color:</label>
+            <SketchPicker color={backgroundColor} onChange={handleBackgroundColorChange} />
+          </div>
           {/* Error message */}
           {error && <div className="error">{error}</div>}
           {/* Button to save changes */}
