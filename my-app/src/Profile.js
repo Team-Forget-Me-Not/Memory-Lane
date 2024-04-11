@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase Authentication functions
-import { getStorage, ref, uploadBytes } from 'firebase/storage';
 import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { SketchPicker } from 'react-color';
 import './Profile.css';
 
 // Initialize Firebase
-const firebaseStorage = getStorage();
 const firestore = getFirestore();
 const auth = getAuth(); // Initialize Firebase Authentication
 
@@ -17,7 +15,7 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
-  const [profilePic, setProfilePic] = useState(null);
+  const [profilePic, setProfilePic] = useState("");
   const [relationshipStatus, setRelationshipStatus] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [error, setError] = useState(null);
@@ -55,6 +53,7 @@ const Profile = () => {
         setLocation(data.location);
         setBio(data.bio);
         setRelationshipStatus(data.relationshipStatus);
+        setProfilePic(data.imageURL);
         setBackgroundColor(data.backgroundColor);
       } else {
         console.log("No profile data found for this user!");
@@ -65,11 +64,6 @@ const Profile = () => {
     } finally {
       setLoading(false);
     }
-  };
-
-  const handleProfilePicChange = (event) => {
-    const selectedFile = event.target.files[0];
-    setProfilePic(selectedFile);
   };
 
   const handleUsernameChange = (event) => {
@@ -93,21 +87,27 @@ const Profile = () => {
     document.body.style.backgroundColor = color.hex;
   };
 
+  const handleProfilePicChange = (event) => {
+    const selectedFile = event.target.files[0];
+    // You may want to add validation for the selected file type or size
+    setProfilePic(URL.createObjectURL(selectedFile));
+  };
+
   const handleSaveChanges = async () => {
     try {
-      setLoading(true);
-      let imageURL = null;
-
-      if (profilePic) {
-        imageURL = await uploadProfilePicture(profilePic);
+      if (!user) {
+        setError("User not authenticated. Please log in.");
+        return;
       }
+
+      setLoading(true);
 
       const profileData = {
         username,
         location,
         bio,
         relationshipStatus,
-        imageURL,
+        imageURL: profilePic,
         backgroundColor
       };
 
@@ -129,12 +129,6 @@ const Profile = () => {
     }
   };
 
-  const uploadProfilePicture = async (file) => {
-    const storageRef = ref(firebaseStorage, `profile_pictures/${file.name}`);
-    await uploadBytes(storageRef, file);
-    return `https://storage.googleapis.com/${firebaseStorage.app.options.storageBucket}/profile_pictures/${file.name}`;
-  };
-
   // If no user is logged in, display a message prompting the user to log in
   if (!user) {
     return <div>Please log in to access this page</div>;
@@ -143,12 +137,9 @@ const Profile = () => {
   return (
     <div className="profile-container">
       <div className="profile-header">
-        <div className="profile-picture-container">
-          {/* Input for selecting profile picture */}
-          <label htmlFor="profile-pic" className="profile-picture-label">
-            <img src={profilePic ? URL.createObjectURL(profilePic) : "https://via.placeholder.com/150"} alt="Profile" className="profile-picture" />
-            <input type="file" id="profile-pic" accept="image/*" onChange={handleProfilePicChange} style={{ display: "none" }} />
-          </label>
+        <div className="profile-picture-container" onClick={() => document.getElementById('profile-pic-input').click()}>
+          <img src={profilePic || "https://via.placeholder.com/150"} alt="Profile" className="profile-picture" />
+          <input type="file" id="profile-pic-input" accept="image/*" onChange={handleProfilePicChange} style={{ display: "none" }} />
         </div>
         <div className="profile-details">
           <h2>Edit Profile</h2>
