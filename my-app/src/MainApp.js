@@ -21,7 +21,7 @@ const MainApp = () => {
         <Route path="/Front-page" component={FrontPage} />  
         <Route path="/Planner" component={Planner} />
         <Route path="/Profile" component={Profile} />
-        <Route path="/" component={FrontPage} />
+        <Route path="/" component={App} />
       </Switch>
     </Router>
   );
