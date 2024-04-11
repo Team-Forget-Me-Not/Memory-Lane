@@ -38,6 +38,13 @@ const Profile = () => {
       }
     });
 
+    // Check for background color in local storage and apply if available
+    const storedColor = localStorage.getItem('backgroundColor');
+    if (storedColor) {
+      setBackgroundColor(storedColor);
+      document.body.style.backgroundColor = storedColor;
+    }
+
     return () => unsubscribe(); // Unsubscribe from onAuthStateChanged listener on component unmount
   }, []);
 
@@ -83,13 +90,15 @@ const Profile = () => {
   };
 
   const handleBackgroundColorChange = (color) => {
-    setBackgroundColor(color.hex);
-    document.body.style.backgroundColor = color.hex;
+    const colorValue = color.hex;
+    setBackgroundColor(colorValue);
+    document.body.style.backgroundColor = colorValue;
+    // Save the selected color to local storage
+    localStorage.setItem('backgroundColor', colorValue);
   };
 
   const handleProfilePicChange = (event) => {
     const selectedFile = event.target.files[0];
-    // You may want to add validation for the selected file type or size
     setProfilePic(URL.createObjectURL(selectedFile));
   };
 
