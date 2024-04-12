@@ -21,6 +21,7 @@ const CreateAccount = () => {
     confirmPassword: '',
     gender: ''
   });
+
   // Function to handle form submission
   const handleCreateAccount = (e) => {
     const { name, value } = e.target;
@@ -30,63 +31,57 @@ const CreateAccount = () => {
     }));
   };
 
-
-
   const handleSubmit = (event) => {
-    event.preventDefault();//Prevent the form submitting that refreshes the page
-    if(formData.password !== formData.confirmPassword){
+    event.preventDefault(); // Prevent the form submitting that refreshes the page
+    if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match!");
       return;
     }
-    history.push('/app');
-    //Access all the form data as an object in 'formData' state variable
-    console.log(formData)
-    //call the signup function to handle user registration
+    // Access all the form data as an object in 'formData' state variable
+    console.log(formData);
+    // Call the signup function to handle user registration
     signUp();
   };
 
-
   const signUp = async () => {
-    formData.userName = (formData.email).split('@')[0]; //Use part before @ in email address to set default userName
+    formData.userName = formData.email.split('@')[0]; // Use part before @ in email address to set default userName
     console.log("Username: ", formData.userName);
 
-    firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password)
-      .then((userCredential) => {
-        const userUid = userCredential.user.uid;
-        console.log("Printing from signup: ", userUid);
-        console.log("Starting to add doc ", userUid);
+    try {
+      const userCredential = await firebase.auth().createUserWithEmailAndPassword(formData.email, formData.password);
+      const userUid = userCredential.user.uid;
+      console.log("Printing from signup: ", userUid);
+      console.log("Starting to add doc ", userUid);
 
-        //Use uid as document id in the firestore database
-        const docRef = db.collection('Users').doc(userUid);
+      // Use uid as document id in the firestore database
+      const docRef = db.collection('Users').doc(userUid);
 
-        //Create a new object with the fields to be added to Firestore
-        const userData = {
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          email: formData.email,
-          gender: formData.gender,
-          userName: formData.userName
-        };
+      // Create a new object with the fields to be added to Firestore
+      const userData = {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        gender: formData.gender,
+        userName: formData.userName,
+        uid: userUid // Store the UID in Firestore
+      };
 
-        //Add a new document to Firestore
-        docRef.set(userData)
-        .then(() =>{
-          if(userUid){
-            //alert when registration is successful
-            alert("Register Successfully");
-          } else{
-            alert("Error Occurred")
-          }
-          console.log('Document written with ID: ', docRef.id);
-        })
-        .catch((error) => {
-          console.error('Error adding document: ', error);
-        });
-      })
-      .catch((error) => {
-        var errorCode = error.code;
-        var errorMessage = error.message;
-      })
+      // Add a new document to Firestore
+      await docRef.set(userData);
+
+      // Alert when registration is successful
+      alert("Register Successfully");
+
+      console.log('Document written with ID: ', docRef.id);
+
+      // Redirect the user to the app after successful signup
+      history.push('/app');
+    } catch (error) {
+      console.error('Error signing up: ', error.message);
+      // Handle error here
+      // For example, show error message to the user
+      alert("Error occurred: " + error.message);
+    }
   };
 
   return (
@@ -122,7 +117,7 @@ const CreateAccount = () => {
           <FontAwesomeIcon icon={faEnvelope} />
           <input
             type="email"
-            name ="email"
+            name="email"
             placeholder="Email"
             value={formData.email}
             onChange={handleCreateAccount}
