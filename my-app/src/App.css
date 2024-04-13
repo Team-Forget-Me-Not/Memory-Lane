@@ -130,3 +130,34 @@ button:hover {
   width: 85px;
   height: auto; /* Maintain aspect ratio */
 }
+.entry-actions {
+  display: flex; /* Use flexbox to layout buttons horizontally */
+  justify-content: space-between; /* Add space between buttons */
+  align-items: center; /* Align buttons vertically */
+  margin-top: 10px;
+}
+
+.edit-button, .delete-button {
+  border: none;
+  color: white;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Include background-color in transition for smoother effect */
+  padding: 8px 16px; /* Adjust padding for smaller buttons */
+}
+
+.edit-button {
+  background-color: green;
+}
+
+.delete-button {
+  background-color: red;
+}
+
+.edit-button:hover {
+  background-color: darkgreen; /* Darker green color on hover */
+}
+
+.delete-button:hover {
+  background-color: darkred; /* Darker red color on hover */
+}

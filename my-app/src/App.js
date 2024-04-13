@@ -141,6 +141,12 @@ const App = () => {
         return;
       }
 
+      // Ask for confirmation before deleting the entry
+      const confirmDelete = window.confirm("Are you sure you want to delete this entry?");
+      if (!confirmDelete) {
+        return; // If user cancels, do nothing
+      }
+
       setLoading(true); // Set loading status
 
       const entryRef = doc(collection(firestore, 'entries'), user.uid); // Reference to user's diary entry
@@ -202,9 +208,9 @@ const App = () => {
             onChange={handleEntryTextChange}
             style={{ fontSize: '1.2em', minHeight: '100px', padding: '5px', marginBottom: '10px' }}
           />
-          <label htmlFor="image-upload" className="image-upload-label" style={{ marginBottom: '10px', display: 'block', fontSize: '1.2em', color: '#333' }}>
-            <FontAwesomeIcon icon={faImages} /> Upload Image
-          </label>
+          <button className="upload-button" onClick={() => document.getElementById('image-upload').click()}>
+            <FontAwesomeIcon icon={faImages} /> Choose File
+          </button>
           <input
             id="image-upload"
             type="file"
@@ -237,12 +243,7 @@ const App = () => {
             <p style={{ fontSize: '1.2em', color: '#777' }}>No entries for this date.</p>
           ) : (
             entries.map((entry, index) => (
-              <div key={index} className="entry-card" style={{ border: '1px solid #ddd', borderRadius: '5px', marginBottom: '20px', padding: '15px' }}>
-                {/* Edit and delete buttons */}
-                <div style={{ marginBottom: '10px' }}>
-                  <button onClick={() => handleEditEntry(index)} style={{ marginRight: '10px' }}><FontAwesomeIcon icon={faEdit} /> Edit</button>
-                  <button onClick={() => handleDeleteEntry(entry.id)} style={{ color: 'red' }}><FontAwesomeIcon icon={faTrash} /> Delete</button>
-                </div>
+              <div key={index} className="entry-card">
                 {/* Rest of the entry card */}
                 <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
                 <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
@@ -265,6 +266,15 @@ const App = () => {
                     ></iframe>
                   </div>
                 )}
+                {/* Edit and delete buttons */}
+                <div className="entry-actions">
+                  <button onClick={() => handleEditEntry(index)} className="edit-button">
+                    <FontAwesomeIcon icon={faEdit} /> Edit
+                  </button>
+                  <button onClick={() => handleDeleteEntry(entry.id)} className="delete-button">
+                    <FontAwesomeIcon icon={faTrash} /> Delete
+                  </button>
+                </div>
               </div>
             ))
           )}
