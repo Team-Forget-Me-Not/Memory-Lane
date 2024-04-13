@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
 import './App.css';
 
@@ -125,6 +125,42 @@ const App = () => {
     }
   };
 
+  // Function to handle edit entry action
+  const handleEditEntry = (index) => {
+    // Retrieve the entry to edit based on its index in the entries array
+    const entryToEdit = entries[index];
+    // Set the entry details in the form fields for editing
+    setEntryTitle(entryToEdit.title);
+    setEntryText(entryToEdit.text);
+    setImage(entryToEdit.image);
+    setMusicVideoTitle(entryToEdit.musicVideoTitle);
+    setMusicVideoLink(entryToEdit.musicVideoLink);
+  };
+
+  // Function to handle delete entry action
+  const handleDeleteEntry = async (index) => {
+    try {
+      // Confirmation prompt before deleting the entry
+      const confirmDelete = window.confirm("Are you sure you want to delete this entry?");
+      if (confirmDelete) {
+        // Remove the entry from the entries array based on its index
+        const updatedEntries = [...entries];
+        updatedEntries.splice(index, 1);
+        setEntries(updatedEntries);
+
+        // Perform deletion operation in the database if needed
+        // Example: You might want to delete the entry from Firestore here
+        // const entryRefToDelete = doc(collection(firestore, 'entries'), user.uid);
+        // await deleteDoc(entryRefToDelete);
+
+        console.log("Entry deleted successfully!");
+      }
+    } catch (error) {
+      setError("Error deleting entry. Please try again later.");
+      console.error("Error deleting entry:", error);
+    }
+  };
+
   if (!user) {
     return <div>Please log in to access this page</div>; // Render login message if user not authenticated
   }
@@ -179,7 +215,7 @@ const App = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            style={{ display: 'none' }}
+            style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
           />
           <input
             type="text"
@@ -207,7 +243,19 @@ const App = () => {
           ) : (
             entries.map((entry, index) => (
               <div key={index} className="entry-card" style={{ border: '1px solid #ddd', borderRadius: '5px', marginBottom: '20px', padding: '15px' }}>
-                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                  <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
+                  <div>
+                    {/* Edit button with unique color */}
+                    <button onClick={() => handleEditEntry(index)} style={{ marginRight: '10px', backgroundColor: '#ffca3a', color: '#333' }}>
+                      <FontAwesomeIcon icon={faEdit} /> Edit
+                    </button>
+                    {/* Delete button with unique color */}
+                    <button onClick={() => handleDeleteEntry(index)} style={{ backgroundColor: '#ff4d4d', color: '#fff' }}>
+                      <FontAwesomeIcon icon={faTrash} /> Delete
+                    </button>
+                  </div>
+                </div>
                 <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
                 <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
                 {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px' }} />}
