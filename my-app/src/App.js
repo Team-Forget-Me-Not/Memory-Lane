@@ -125,11 +125,8 @@ const App = () => {
     }
   };
 
-  // Function to handle edit entry action
   const handleEditEntry = (index) => {
-    // Retrieve the entry to edit based on its index in the entries array
     const entryToEdit = entries[index];
-    // Set the entry details in the form fields for editing
     setEntryTitle(entryToEdit.title);
     setEntryText(entryToEdit.text);
     setImage(entryToEdit.image);
@@ -137,27 +134,25 @@ const App = () => {
     setMusicVideoLink(entryToEdit.musicVideoLink);
   };
 
-  // Function to handle delete entry action
-  const handleDeleteEntry = async (index) => {
+  const handleDeleteEntry = async (entryId) => {
     try {
-      // Confirmation prompt before deleting the entry
-      const confirmDelete = window.confirm("Are you sure you want to delete this entry?");
-      if (confirmDelete) {
-        // Remove the entry from the entries array based on its index
-        const updatedEntries = [...entries];
-        updatedEntries.splice(index, 1);
-        setEntries(updatedEntries);
-
-        // Perform deletion operation in the database if needed
-        // Example: You might want to delete the entry from Firestore here
-        // const entryRefToDelete = doc(collection(firestore, 'entries'), user.uid);
-        // await deleteDoc(entryRefToDelete);
-
-        console.log("Entry deleted successfully!");
+      if (!user) {
+        setError("User not authenticated. Please log in."); // Set error message if user not authenticated
+        return;
       }
+
+      setLoading(true); // Set loading status
+
+      const entryRef = doc(collection(firestore, 'entries'), user.uid); // Reference to user's diary entry
+      await deleteDoc(entryRef); // Delete diary entry
+
+      console.log("Entry deleted successfully!"); // Log success message
+      fetchEntryDetails(user.uid); // Fetch updated diary entries
     } catch (error) {
-      setError("Error deleting entry. Please try again later.");
-      console.error("Error deleting entry:", error);
+      setError("Error deleting entry. Please try again later."); // Set error message
+      console.error("Error deleting entry: ", error); // Log error
+    } finally {
+      setLoading(false); // Reset loading status
     }
   };
 
@@ -215,7 +210,7 @@ const App = () => {
             type="file"
             accept="image/*"
             onChange={handleImageChange}
-            style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
+            style={{ display: 'none' }}
           />
           <input
             type="text"
@@ -243,19 +238,13 @@ const App = () => {
           ) : (
             entries.map((entry, index) => (
               <div key={index} className="entry-card" style={{ border: '1px solid #ddd', borderRadius: '5px', marginBottom: '20px', padding: '15px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-                  <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
-                  <div>
-                    {/* Edit button with unique color */}
-                    <button onClick={() => handleEditEntry(index)} style={{ marginRight: '10px', backgroundColor: '#ffca3a', color: '#333' }}>
-                      <FontAwesomeIcon icon={faEdit} /> Edit
-                    </button>
-                    {/* Delete button with unique color */}
-                    <button onClick={() => handleDeleteEntry(index)} style={{ backgroundColor: '#ff4d4d', color: '#fff' }}>
-                      <FontAwesomeIcon icon={faTrash} /> Delete
-                    </button>
-                  </div>
+                {/* Edit and delete buttons */}
+                <div style={{ marginBottom: '10px' }}>
+                  <button onClick={() => handleEditEntry(index)} style={{ marginRight: '10px' }}><FontAwesomeIcon icon={faEdit} /> Edit</button>
+                  <button onClick={() => handleDeleteEntry(entry.id)} style={{ color: 'red' }}><FontAwesomeIcon icon={faTrash} /> Delete</button>
                 </div>
+                {/* Rest of the entry card */}
+                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
                 <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
                 <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
                 {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px' }} />}
