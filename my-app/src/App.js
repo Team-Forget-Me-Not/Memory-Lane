@@ -16,11 +16,13 @@ const App = () => {
   const [entryTitle, setEntryTitle] = useState(""); // State for entry title
   const [entryText, setEntryText] = useState(""); // State for entry text
   const [image, setImage] = useState(""); // State for image URL
+  const [imagePreview, setImagePreview] = useState(""); // State for image preview URL
   const [musicVideoTitle, setMusicVideoTitle] = useState(""); // State for music/video title
   const [musicVideoLink, setMusicVideoLink] = useState(""); // State for music/video link
   const [error, setError] = useState(null); // State for error messages
   const [loading, setLoading] = useState(false); // State for loading status
   const [entries, setEntries] = useState([]); // State for diary entries
+  const [editEntryId, setEditEntryId] = useState(null); // State to track the ID of the entry being edited
 
   const videoRef = useRef(null); // Reference to the video player
 
@@ -39,6 +41,7 @@ const App = () => {
         setEntryTitle(""); // Reset entry title
         setEntryText(""); // Reset entry text
         setImage(""); // Reset image URL
+        setImagePreview(""); // Reset image preview URL
         setMusicVideoTitle(""); // Reset music/video title
         setMusicVideoLink(""); // Reset music/video link
       }
@@ -83,7 +86,9 @@ const App = () => {
 
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
-    setImage(URL.createObjectURL(selectedFile));
+    const imageUrl = URL.createObjectURL(selectedFile);
+    setImage(imageUrl); // Set image URL
+    setImagePreview(imageUrl); // Set image preview URL
   };
 
   const handleMusicVideoTitleChange = (event) => {
@@ -94,6 +99,7 @@ const App = () => {
     setMusicVideoLink(event.target.value);
   };
 
+  // Function to handle both adding and updating entries
   const handleSaveEntry = async () => {
     try {
       if (!user) {
@@ -112,28 +118,41 @@ const App = () => {
         timestamp: serverTimestamp() // Use serverTimestamp() to generate server-side timestamp
       };
 
-      const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`); // Reference to entries subcollection for the current user
-      await addDoc(userEntriesRef, entryData); // Add new entry document
+      if (editEntryId) {
+        // If editEntryId exists, update the existing entry
+        const entryRef = doc(collection(firestore, `diary_entries/${user.uid}/entries`), editEntryId);
+        await setDoc(entryRef, entryData, { merge: true }); // Merge with existing data
+        console.log("Entry details updated successfully!");
+      } else {
+        // If editEntryId does not exist, add a new entry
+        const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`); // Reference to entries subcollection for the current user
+        await addDoc(userEntriesRef, entryData); // Add new entry document
+        console.log("New entry added successfully!");
+      }
 
-      console.log("Entry details saved successfully!"); // Log success message
       fetchEntryDetails(user.uid); // Fetch updated diary entries
     } catch (error) {
       setError("Error saving entry details. Please try again later."); // Set error message
       console.error("Error in saving entry details: ", error); // Log error
     } finally {
       setLoading(false); // Reset loading status
+      setEditEntryId(null); // Reset editEntryId state
     }
   };
 
+  // Function to set state for editing an entry
   const handleEditEntry = (entryId) => {
     const entryToEdit = entries.find(entry => entry.id === entryId);
+    setEditEntryId(entryId); // Set the ID of the entry being edited
     setEntryTitle(entryToEdit.title);
     setEntryText(entryToEdit.text);
     setImage(entryToEdit.image);
+    setImagePreview(entryToEdit.image); // Set image preview
     setMusicVideoTitle(entryToEdit.musicVideoTitle);
     setMusicVideoLink(entryToEdit.musicVideoLink);
   };
 
+  // Function to delete an entry
   const handleDeleteEntry = async (entryId) => {
     try {
       if (!user) {
@@ -218,6 +237,9 @@ const App = () => {
             onChange={handleImageChange}
             style={{ display: 'none' }}
           />
+          <div className="image-preview">
+            {imagePreview && <img src={imagePreview} alt="Preview" style={{ maxWidth: '25%', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />}
+          </div>
           <input
             type="text"
             placeholder="Music/Video Title"
@@ -237,9 +259,11 @@ const App = () => {
               <FontAwesomeIcon icon={faSave} /> Save Entry
             </button>
             <button onClick={() => { // Function to clear input fields
+              setEditEntryId(null); // Reset editEntryId state
               setEntryTitle("");
               setEntryText("");
               setImage("");
+              setImagePreview("");
               setMusicVideoTitle("");
               setMusicVideoLink("");
             }} className="cancel-button" style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
