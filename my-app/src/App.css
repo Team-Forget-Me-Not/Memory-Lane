@@ -151,7 +151,7 @@ button:hover {
 }
 
 .delete-button {
-  background-color: red;
+  background-color: #ff0000;
 }
 
 .edit-button:hover {
@@ -159,5 +159,13 @@ button:hover {
 }
 
 .delete-button:hover {
-  background-color: darkred; /* Darker red color on hover */
+  background-color: #8b0000; /* Darker red color on hover */
+}
+
+
+.save-button:hover{
+  background-color: #0056b3 !important; /* Darker blue shade for hover */
+}
+.cancel-button:hover {
+  background-color: #8b0000 !important; /* Darker red shade for hover */
 }

@@ -232,9 +232,20 @@ const App = () => {
             onChange={handleMusicVideoLinkChange}
             style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
           />
-          <button onClick={handleSaveEntry} style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
-            <FontAwesomeIcon icon={faSave} /> Save Entry
-          </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <button onClick={handleSaveEntry} className="save-button" style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+              <FontAwesomeIcon icon={faSave} /> Save Entry
+            </button>
+            <button onClick={() => { // Function to clear input fields
+              setEntryTitle("");
+              setEntryText("");
+              setImage("");
+              setMusicVideoTitle("");
+              setMusicVideoLink("");
+            }} className="cancel-button" style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#dc3545', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
+            Cancel
+            </button>
+          </div>
         </div>
 
         {/* Display diary entries */}
