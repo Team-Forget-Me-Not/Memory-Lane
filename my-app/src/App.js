@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc } from 'firebase/firestore';
+import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
@@ -50,15 +50,14 @@ const App = () => {
   const fetchEntryDetails = async (userId) => {
     try {
       setLoading(true); // Set loading status
-      const entryRef = doc(collection(firestore, 'entries'), userId); // Reference to user's diary entry
-      const entrySnap = await getDoc(entryRef); // Get diary entry document
-      if (entrySnap.exists()) {
-        const data = entrySnap.data(); // Extract data from diary entry
-        setEntries([data]); // Set diary entries state
-      } else {
-        console.log("No entry details found for this user!"); // Log if no entry found
-        setEntries([]); // Set empty diary entries state
-      }
+      const entriesRef = collection(firestore, `diary_entries/${userId}/entries`); // Reference to entries subcollection for the current user
+      const querySnapshot = await getDocs(entriesRef); // Get all documents from the entries subcollection
+      const userEntries = []; // Array to store user's entries
+      querySnapshot.forEach((doc) => {
+        const entryData = doc.data();
+        userEntries.push({ id: doc.id, ...entryData, timestamp: entryData.timestamp.toDate() }); // Parse timestamp to Date object
+      });
+      setEntries(userEntries); // Set diary entries state
     } catch (error) {
       setError("Error fetching entry details. Please try again later."); // Set error message
       console.error("Error fetching entry details: ", error); // Log error
@@ -107,13 +106,14 @@ const App = () => {
       const entryData = {
         title: entryTitle,
         text: entryText,
-        image,
+        image: image, // Save image URL
         musicVideoTitle,
-        musicVideoLink
+        musicVideoLink,
+        timestamp: serverTimestamp() // Use serverTimestamp() to generate server-side timestamp
       };
 
-      const entryRef = doc(collection(firestore, 'entries'), user.uid); // Reference to user's diary entry
-      await setDoc(entryRef, entryData); // Save diary entry data
+      const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`); // Reference to entries subcollection for the current user
+      await addDoc(userEntriesRef, entryData); // Add new entry document
 
       console.log("Entry details saved successfully!"); // Log success message
       fetchEntryDetails(user.uid); // Fetch updated diary entries
@@ -125,8 +125,8 @@ const App = () => {
     }
   };
 
-  const handleEditEntry = (index) => {
-    const entryToEdit = entries[index];
+  const handleEditEntry = (entryId) => {
+    const entryToEdit = entries.find(entry => entry.id === entryId);
     setEntryTitle(entryToEdit.title);
     setEntryText(entryToEdit.text);
     setImage(entryToEdit.image);
@@ -149,7 +149,7 @@ const App = () => {
 
       setLoading(true); // Set loading status
 
-      const entryRef = doc(collection(firestore, 'entries'), user.uid); // Reference to user's diary entry
+      const entryRef = doc(collection(firestore, `diary_entries/${user.uid}/entries`), entryId); // Reference to entry document
       await deleteDoc(entryRef); // Delete diary entry
 
       console.log("Entry deleted successfully!"); // Log success message
@@ -242,13 +242,25 @@ const App = () => {
           {entries.length === 0 ? (
             <p style={{ fontSize: '1.2em', color: '#777' }}>No entries for this date.</p>
           ) : (
-            entries.map((entry, index) => (
-              <div key={index} className="entry-card">
+            entries.map((entry) => (
+              <div key={entry.id} className="entry-card">
                 {/* Rest of the entry card */}
-                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.date}</h3>
+                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{new Date(entry.timestamp).toLocaleDateString()}</h3>
                 <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
                 <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
-                {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px' }} />}
+                {entry.image && (
+                  <img
+                    src={entry.image}
+                    alt="Entry"
+                    style={{
+                      maxWidth: '100%',
+                      marginBottom: '10px',
+                      borderRadius: '5px',
+                      border: '1px solid #ccc', // Add border for better visibility
+                    }}
+                    onError={(e) => console.error('Error loading image:', e)} // Add error handling
+                  />
+                )}
                 {entry.musicVideoTitle && entry.musicVideoLink && (
                   <div className="music-section">
                     <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.musicVideoTitle}</h4>
@@ -268,7 +280,7 @@ const App = () => {
                 )}
                 {/* Edit and delete buttons */}
                 <div className="entry-actions">
-                  <button onClick={() => handleEditEntry(index)} className="edit-button">
+                  <button onClick={() => handleEditEntry(entry.id)} className="edit-button">
                     <FontAwesomeIcon icon={faEdit} /> Edit
                   </button>
                   <button onClick={() => handleDeleteEntry(entry.id)} className="delete-button">

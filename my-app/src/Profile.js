@@ -15,7 +15,7 @@ const Profile = () => {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
-  const [profilePic, setProfilePic] = useState("");
+  const [profilePic, setProfilePic] = useState(""); // Modified to store URL directly
   const [relationshipStatus, setRelationshipStatus] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [error, setError] = useState(null);
@@ -38,11 +38,15 @@ const Profile = () => {
       }
     });
 
-    // Check for background color in local storage and apply if available
+    // Check for background color and profile pic URL in local storage and apply if available
     const storedColor = localStorage.getItem('backgroundColor');
+    const storedProfilePic = localStorage.getItem('profilePic');
     if (storedColor) {
       setBackgroundColor(storedColor);
       document.body.style.backgroundColor = storedColor;
+    }
+    if (storedProfilePic) {
+      setProfilePic(storedProfilePic);
     }
 
     return () => unsubscribe(); // Unsubscribe from onAuthStateChanged listener on component unmount
@@ -62,6 +66,8 @@ const Profile = () => {
         setRelationshipStatus(data.relationshipStatus);
         setProfilePic(data.imageURL);
         setBackgroundColor(data.backgroundColor);
+        // Store profile picture URL in local storage
+        localStorage.setItem('profilePic', data.imageURL);
       } else {
         console.log("No profile data found for this user!");
       }
