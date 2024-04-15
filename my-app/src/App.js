@@ -5,14 +5,15 @@ import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, quer
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar';
+import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
+
 import './App.css';
 
-// Initialize Firebase authentication and Firestore
 const firestore = getFirestore();
 const auth = getAuth();
 
 const App = () => {
-  const [user, setUser] = useState(null); // State for user authentication
+  const [user, setUser] = useState(null); // State to hold user data
   const [entryTitle, setEntryTitle] = useState(""); // State for entry title
   const [entryText, setEntryText] = useState(""); // State for entry text
   const [image, setImage] = useState(""); // State for image URL
@@ -20,30 +21,31 @@ const App = () => {
   const [musicVideoTitle, setMusicVideoTitle] = useState(""); // State for music/video title
   const [musicVideoLink, setMusicVideoLink] = useState(""); // State for music/video link
   const [error, setError] = useState(null); // State for error messages
-  const [loading, setLoading] = useState(false); // State for loading status
-  const [entries, setEntries] = useState([]); // State for diary entries
-  const [editEntryId, setEditEntryId] = useState(null); // State to track the ID of the entry being edited
+  const [loading, setLoading] = useState(false); // State to indicate loading state
+  const [entries, setEntries] = useState([]); // State to hold diary entries
+  const [editEntryId, setEditEntryId] = useState(null); // State for editing an entry
+  const [selectedDate, setSelectedDate] = useState(new Date()); // State for selected date
 
-  const videoRef = useRef(null); // Reference to the video player
-
+  const videoRef = useRef(null); // Reference for video iframe
   const history = useHistory(); // History hook for navigation
 
-  const currentDate = new Date(); // Current date
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false); // State for emoji picker visibility
+  const [selectedEmoji, setSelectedEmoji] = useState(""); // State for selected emoji
 
   useEffect(() => {
-    // Effect to listen for authentication state changes
+    // Effect hook to handle user authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        setUser(user); // Set authenticated user
-        fetchEntryDetails(user.uid); // Fetch diary entries for the user
+        setUser(user);
+        fetchEntryDetails(user.uid);
       } else {
-        setUser(null); // Set user to null if not authenticated
-        setEntryTitle(""); // Reset entry title
-        setEntryText(""); // Reset entry text
-        setImage(""); // Reset image URL
-        setImagePreview(""); // Reset image preview URL
-        setMusicVideoTitle(""); // Reset music/video title
-        setMusicVideoLink(""); // Reset music/video link
+        setUser(null);
+        setEntryTitle("");
+        setEntryText("");
+        setImage("");
+        setImagePreview("");
+        setMusicVideoTitle("");
+        setMusicVideoLink("");
       }
     });
 
@@ -51,31 +53,32 @@ const App = () => {
   }, []);
 
   const fetchEntryDetails = async (userId) => {
+    // Function to fetch diary entries from Firestore
     try {
-      setLoading(true); // Set loading status
-      const entriesRef = collection(firestore, `diary_entries/${userId}/entries`); // Reference to entries subcollection for the current user
-      const querySnapshot = await getDocs(entriesRef); // Get all documents from the entries subcollection
-      const userEntries = []; // Array to store user's entries
+      setLoading(true);
+      const entriesRef = collection(firestore, `diary_entries/${userId}/entries`);
+      const querySnapshot = await getDocs(entriesRef);
+      const userEntries = [];
       querySnapshot.forEach((doc) => {
         const entryData = doc.data();
-        userEntries.push({ id: doc.id, ...entryData, timestamp: entryData.timestamp.toDate() }); // Parse timestamp to Date object
+        userEntries.push({ id: doc.id, ...entryData, timestamp: entryData.timestamp.toDate() });
       });
-      setEntries(userEntries); // Set diary entries state
+      setEntries(userEntries);
     } catch (error) {
-      setError("Error fetching entry details. Please try again later."); // Set error message
-      console.error("Error fetching entry details: ", error); // Log error
+      setError("Error fetching entry details. Please try again later.");
+      console.error("Error fetching entry details: ", error);
     } finally {
-      setLoading(false); // Reset loading status
+      setLoading(false);
     }
   };
 
   const getYouTubeVideoId = (url) => {
     // Function to extract YouTube video ID from URL
-    const match = url.match(/[?&]v=([^&]+)/); // Match video ID pattern in URL
-    return match ? match[1] : null; // Return video ID if found, otherwise null
+    const match = url.match(/[?&]v=([^&]+)/);
+    return match ? match[1] : null;
   };
 
-  // Event handlers for input changes
+  // Event handlers for form inputs
   const handleEntryTitleChange = (event) => {
     setEntryTitle(event.target.value);
   };
@@ -87,8 +90,8 @@ const App = () => {
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
     const imageUrl = URL.createObjectURL(selectedFile);
-    setImage(imageUrl); // Set image URL
-    setImagePreview(imageUrl); // Set image preview URL
+    setImage(imageUrl);
+    setImagePreview(imageUrl);
   };
 
   const handleMusicVideoTitleChange = (event) => {
@@ -99,90 +102,100 @@ const App = () => {
     setMusicVideoLink(event.target.value);
   };
 
-  // Function to handle both adding and updating entries
   const handleSaveEntry = async () => {
+    // Function to save or update a diary entry
     try {
       if (!user) {
-        setError("User not authenticated. Please log in."); // Set error message if user not authenticated
+        setError("User not authenticated. Please log in.");
         return;
       }
 
-      setLoading(true); // Set loading status
+      setLoading(true);
 
       const entryData = {
         title: entryTitle,
         text: entryText,
-        image: image, // Save image URL
+        image: image,
         musicVideoTitle,
         musicVideoLink,
-        timestamp: serverTimestamp() // Use serverTimestamp() to generate server-side timestamp
+        timestamp: serverTimestamp()
       };
 
       if (editEntryId) {
-        // If editEntryId exists, update the existing entry
         const entryRef = doc(collection(firestore, `diary_entries/${user.uid}/entries`), editEntryId);
-        await setDoc(entryRef, entryData, { merge: true }); // Merge with existing data
+        await setDoc(entryRef, entryData, { merge: true });
         console.log("Entry details updated successfully!");
       } else {
-        // If editEntryId does not exist, add a new entry
-        const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`); // Reference to entries subcollection for the current user
-        await addDoc(userEntriesRef, entryData); // Add new entry document
+        const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`);
+        await addDoc(userEntriesRef, entryData);
         console.log("New entry added successfully!");
       }
 
-      fetchEntryDetails(user.uid); // Fetch updated diary entries
+      fetchEntryDetails(user.uid);
     } catch (error) {
-      setError("Error saving entry details. Please try again later."); // Set error message
-      console.error("Error in saving entry details: ", error); // Log error
+      setError("Error saving entry details. Please try again later.");
+      console.error("Error in saving entry details: ", error);
     } finally {
-      setLoading(false); // Reset loading status
-      setEditEntryId(null); // Reset editEntryId state
+      setLoading(false);
+      setEditEntryId(null);
     }
   };
 
-  // Function to set state for editing an entry
   const handleEditEntry = (entryId) => {
+    // Function to handle editing an entry
     const entryToEdit = entries.find(entry => entry.id === entryId);
-    setEditEntryId(entryId); // Set the ID of the entry being edited
+    setEditEntryId(entryId);
     setEntryTitle(entryToEdit.title);
     setEntryText(entryToEdit.text);
     setImage(entryToEdit.image);
-    setImagePreview(entryToEdit.image); // Set image preview
+    setImagePreview(entryToEdit.image);
     setMusicVideoTitle(entryToEdit.musicVideoTitle);
     setMusicVideoLink(entryToEdit.musicVideoLink);
   };
 
-  // Function to delete an entry
   const handleDeleteEntry = async (entryId) => {
+    // Function to handle deleting an entry
     try {
       if (!user) {
-        setError("User not authenticated. Please log in."); // Set error message if user not authenticated
+        setError("User not authenticated. Please log in.");
         return;
       }
 
-      // Ask for confirmation before deleting the entry
       const confirmDelete = window.confirm("Are you sure you want to delete this entry?");
       if (!confirmDelete) {
-        return; // If user cancels, do nothing
+        return;
       }
 
-      setLoading(true); // Set loading status
+      setLoading(true);
 
-      const entryRef = doc(collection(firestore, `diary_entries/${user.uid}/entries`), entryId); // Reference to entry document
-      await deleteDoc(entryRef); // Delete diary entry
+      const entryRef = doc(collection(firestore, `diary_entries/${user.uid}/entries`), entryId);
+      await deleteDoc(entryRef);
 
-      console.log("Entry deleted successfully!"); // Log success message
-      fetchEntryDetails(user.uid); // Fetch updated diary entries
+      console.log("Entry deleted successfully!");
+      fetchEntryDetails(user.uid);
     } catch (error) {
-      setError("Error deleting entry. Please try again later."); // Set error message
-      console.error("Error deleting entry: ", error); // Log error
+      setError("Error deleting entry. Please try again later.");
+      console.error("Error deleting entry: ", error);
     } finally {
-      setLoading(false); // Reset loading status
+      setLoading(false);
     }
   };
 
+  const handleEmojiSelect = (emoji) => {
+    // Function to handle emoji selection
+    setSelectedEmoji(emoji);
+    setShowEmojiPicker(false); // Hide the emoji picker after selection
+    setEntryText(entryText + emoji); // Append selected emoji to entry text
+  };
+
+  const handleDateClick = (date) => {
+    // Function to handle date click in the calendar
+    setSelectedDate(date);
+    // You can implement logic here to open a modal or navigate to a new route for entering an entry on the selected date
+  };
+
   if (!user) {
-    return <div>Please log in to access this page</div>; // Render login message if user not authenticated
+    return <div>Please log in to access this page</div>;
   }
 
   return (
@@ -209,11 +222,12 @@ const App = () => {
       </header>
 
       <section className="main-section">
-        {/* Quick entry form */}
+        {/* Quick entry form section */}
         <div className="quick-entry-form">
-          <h2>{currentDate.toDateString()}</h2>
-          <Calendar currentDate={currentDate} />
+          <h2>{selectedDate.toDateString()}</h2> {/* Use selectedDate instead of currentDate */}
+          <Calendar currentDate={selectedDate} onDateClick={handleDateClick} /> {/* Calendar component */}
           {error && <p style={{ color: 'red' }}>{error}</p>}
+          {/* Form inputs */}
           <input
             type="text"
             placeholder="Entry Title"
@@ -227,9 +241,15 @@ const App = () => {
             onChange={handleEntryTextChange}
             style={{ fontSize: '1.2em', minHeight: '100px', padding: '5px', marginBottom: '10px' }}
           />
+          {/* Button to toggle emoji picker */}
+          <button onClick={() => setShowEmojiPicker(prevState => !prevState)}>Add Emoji</button>
+          {/* Emoji picker */}
+          {showEmojiPicker && <EmojiPicker onSelect={handleEmojiSelect} />}
+          {/* Button to upload image */}
           <button className="upload-button" onClick={() => document.getElementById('image-upload').click()}>
             <FontAwesomeIcon icon={faImages} /> Choose File
           </button>
+          {/* Hidden input for image upload */}
           <input
             id="image-upload"
             type="file"
@@ -237,9 +257,11 @@ const App = () => {
             onChange={handleImageChange}
             style={{ display: 'none' }}
           />
+          {/* Image preview */}
           <div className="image-preview">
             {imagePreview && <img src={imagePreview} alt="Preview" style={{ maxWidth: '25%', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />}
           </div>
+          {/* Music/Video inputs */}
           <input
             type="text"
             placeholder="Music/Video Title"
@@ -254,12 +276,13 @@ const App = () => {
             onChange={handleMusicVideoLinkChange}
             style={{ fontSize: '1.2em', marginBottom: '10px', padding: '5px' }}
           />
+          {/* Save and cancel buttons */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <button onClick={handleSaveEntry} className="save-button" style={{ fontSize: '1.2em', padding: '10px 20px', backgroundColor: '#007bff', color: '#fff', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>
               <FontAwesomeIcon icon={faSave} /> Save Entry
             </button>
-            <button onClick={() => { // Function to clear input fields
-              setEditEntryId(null); // Reset editEntryId state
+            <button onClick={() => {
+              setEditEntryId(null);
               setEntryTitle("");
               setEntryText("");
               setImage("");
@@ -279,7 +302,7 @@ const App = () => {
           ) : (
             entries.map((entry) => (
               <div key={entry.id} className="entry-card">
-                {/* Rest of the entry card */}
+                {/* Display entry details */}
                 <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{new Date(entry.timestamp).toLocaleDateString()}</h3>
                 <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
                 <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
@@ -291,14 +314,15 @@ const App = () => {
                       maxWidth: '100%',
                       marginBottom: '10px',
                       borderRadius: '5px',
-                      border: '1px solid #ccc', // Add border for better visibility
+                      border: '1px solid #ccc',
                     }}
-                    onError={(e) => console.error('Error loading image:', e)} // Add error handling
+                    onError={(e) => console.error('Error loading image:', e)}
                   />
                 )}
                 {entry.musicVideoTitle && entry.musicVideoLink && (
                   <div className="music-section">
                     <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.musicVideoTitle}</h4>
+                    {/* Embed YouTube video */}
                     <iframe
                       ref={videoRef}
                       title="music-player"
@@ -313,7 +337,7 @@ const App = () => {
                     ></iframe>
                   </div>
                 )}
-                {/* Edit and delete buttons */}
+                {/* Entry actions */}
                 <div className="entry-actions">
                   <button onClick={() => handleEditEntry(entry.id)} className="edit-button">
                     <FontAwesomeIcon icon={faEdit} /> Edit
