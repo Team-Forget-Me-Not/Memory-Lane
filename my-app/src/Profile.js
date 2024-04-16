@@ -1,21 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
-import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase Authentication functions
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { SketchPicker } from 'react-color';
 import './Profile.css';
 
-// Initialize Firebase
 const firestore = getFirestore();
-const auth = getAuth(); // Initialize Firebase Authentication
+const auth = getAuth();
 
 const Profile = () => {
-  // State variables for profile details
-  const [user, setUser] = useState(null); // Current user
+  const [user, setUser] = useState(null);
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [bio, setBio] = useState("");
-  const [profilePic, setProfilePic] = useState(""); // Modified to store URL directly
+  const [profilePic, setProfilePic] = useState(""); // State to hold profile picture data as Base64 encoded string
   const [relationshipStatus, setRelationshipStatus] = useState("");
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [error, setError] = useState(null);
@@ -25,37 +23,31 @@ const Profile = () => {
   const history = useHistory();
 
   useEffect(() => {
-    // Check if user is authenticated
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in
         setUser(user);
-        // Fetch user's profile data
         fetchProfileData(user.uid);
       } else {
-        // No user is signed in
         setUser(null);
       }
     });
 
-    // Check for background color and profile pic URL in local storage and apply if available
     const storedColor = localStorage.getItem('backgroundColor');
-    const storedProfilePic = localStorage.getItem('profilePic');
+    const storedProfilePic = localStorage.getItem('profilePic'); // Retrieve profile picture data from local storage
     if (storedColor) {
       setBackgroundColor(storedColor);
       document.body.style.backgroundColor = storedColor;
     }
     if (storedProfilePic) {
-      setProfilePic(storedProfilePic);
+      setProfilePic(storedProfilePic); // Set profile picture data from local storage
     }
 
-    return () => unsubscribe(); // Unsubscribe from onAuthStateChanged listener on component unmount
+    return () => unsubscribe();
   }, []);
 
   const fetchProfileData = async (userId) => {
     try {
       setLoading(true);
-      // Fetch user's profile data from Firestore
       const profileRef = doc(collection(firestore, 'profiles'), userId);
       const profileSnap = await getDoc(profileRef);
       if (profileSnap.exists()) {
@@ -66,8 +58,7 @@ const Profile = () => {
         setRelationshipStatus(data.relationshipStatus);
         setProfilePic(data.imageURL);
         setBackgroundColor(data.backgroundColor);
-        // Store profile picture URL in local storage
-        localStorage.setItem('profilePic', data.imageURL);
+        localStorage.setItem('profilePic', data.imageURL); // Store profile picture data in local storage
       } else {
         console.log("No profile data found for this user!");
       }
@@ -99,13 +90,16 @@ const Profile = () => {
     const colorValue = color.hex;
     setBackgroundColor(colorValue);
     document.body.style.backgroundColor = colorValue;
-    // Save the selected color to local storage
     localStorage.setItem('backgroundColor', colorValue);
   };
 
   const handleProfilePicChange = (event) => {
     const selectedFile = event.target.files[0];
-    setProfilePic(URL.createObjectURL(selectedFile));
+    const reader = new FileReader();
+    reader.onload = function (event) {
+      setProfilePic(event.target.result); // Set profile picture data as Base64 encoded string
+    };
+    reader.readAsDataURL(selectedFile);
   };
 
   const handleSaveChanges = async () => {
@@ -126,7 +120,6 @@ const Profile = () => {
         backgroundColor
       };
 
-      // Save profile data to Firestore with user's UID as document ID
       const profileRef = doc(collection(firestore, 'profiles'), user.uid);
       await setDoc(profileRef, profileData);
 
@@ -144,7 +137,6 @@ const Profile = () => {
     }
   };
 
-  // If no user is logged in, display a message prompting the user to log in
   if (!user) {
     return <div>Please log in to access this page</div>;
   }
@@ -158,7 +150,6 @@ const Profile = () => {
         </div>
         <div className="profile-details">
           <h2>Edit Profile</h2>
-          {/* Input fields for editing profile details */}
           <div className="form-group">
             <label htmlFor="username">Username:</label>
             <input type="text" id="username" value={username} onChange={handleUsernameChange} />
@@ -173,7 +164,6 @@ const Profile = () => {
           </div>
           <div className="form-group">
             <label htmlFor="relationship">Relationship Status:</label>
-            {/* Dropdown for selecting relationship status */}
             <select id="relationship" value={relationshipStatus} onChange={handleRelationshipStatusChange}>
               <option value="">Select</option>
               <option value="Single">Single - 🔓</option>
@@ -184,14 +174,11 @@ const Profile = () => {
               <option value="Widowed">Widowed - ⚰️</option>
             </select>
           </div>
-          {/* Color picker for selecting background color */}
           <div className="form-group">
             <label htmlFor="background-color">Background Color:</label>
             <SketchPicker color={backgroundColor} onChange={handleBackgroundColorChange} />
           </div>
-          {/* Display error message if there's an error */}
           {error && <div className="error">{error}</div>}
-          {/* Button to save changes */}
           <button className="update-button" onClick={handleSaveChanges} disabled={loading || changesSaved}>
             {loading ? 'Saving...' : (changesSaved ? 'Changes Saved' : 'Save Changes')}
           </button>
