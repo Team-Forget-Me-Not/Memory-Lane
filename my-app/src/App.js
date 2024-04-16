@@ -33,6 +33,12 @@ const App = () => {
   const [selectedEmoji, setSelectedEmoji] = useState(""); // State for selected emoji
 
   useEffect(() => {
+    // Check if there's an image stored in local storage
+    const storedImage = localStorage.getItem('image');
+    if (storedImage) {
+      setImagePreview(storedImage);
+    }
+
     // Effect hook to handle user authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
@@ -89,9 +95,15 @@ const App = () => {
 
   const handleImageChange = (event) => {
     const selectedFile = event.target.files[0];
-    const imageUrl = URL.createObjectURL(selectedFile);
-    setImage(imageUrl);
-    setImagePreview(imageUrl);
+    const reader = new FileReader();
+    reader.onload = () => {
+      const imageUrl = reader.result;
+      setImage(imageUrl);
+      setImagePreview(imageUrl);
+      // Store image data as Base64 string in local storage
+      localStorage.setItem('image', imageUrl);
+    };
+    reader.readAsDataURL(selectedFile);
   };
 
   const handleMusicVideoTitleChange = (event) => {
