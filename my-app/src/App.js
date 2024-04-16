@@ -63,7 +63,7 @@ const App = () => {
         const entryData = doc.data();
         userEntries.push({ id: doc.id, ...entryData, timestamp: entryData.timestamp.toDate() });
       });
-      setEntries(userEntries.reverse());
+      setEntries(userEntries);
     } catch (error) {
       setError("Error fetching entry details. Please try again later.");
       console.error("Error fetching entry details: ", error);
@@ -118,7 +118,7 @@ const App = () => {
         image: image,
         musicVideoTitle,
         musicVideoLink,
-        timestamp: selectedDate // Use selectedDate instead of serverTimestamp()
+        timestamp: serverTimestamp()
       };
 
       if (editEntryId) {
@@ -127,16 +127,11 @@ const App = () => {
         console.log("Entry details updated successfully!");
       } else {
         const userEntriesRef = collection(firestore, `diary_entries/${user.uid}/entries`);
-        const newEntryRef = await addDoc(userEntriesRef, entryData);
+        await addDoc(userEntriesRef, entryData);
         console.log("New entry added successfully!");
-        // Get the newly added entry's ID
-        const newEntryId = newEntryRef.id;
-        // Fetch the new entry
-        const newEntrySnapshot = await getDoc(doc(userEntriesRef, newEntryId));
-        const newEntryData = { id: newEntryId, ...newEntrySnapshot.data(), timestamp: newEntrySnapshot.data().timestamp.toDate() };
-        // Append the new entry to the entries array
-        setEntries(prevEntries => [...prevEntries, newEntryData]);
       }
+
+      fetchEntryDetails(user.uid);
     } catch (error) {
       setError("Error saving entry details. Please try again later.");
       console.error("Error in saving entry details: ", error);
@@ -193,10 +188,18 @@ const App = () => {
     setEntryText(entryText + emoji); // Append selected emoji to entry text
   };
 
-  const handleDateClick = (year, month, day) => {
+  const handleDateClick = (date) => {
     // Function to handle date click in the calendar
-    setSelectedDate(new Date(year, month, day));
-    // You can implement logic here to open a modal or navigate to a new route for entering an entry on the selected date
+    setSelectedDate(date);
+    // Reset entry fields
+    setEntryTitle("");
+    setEntryText("");
+    setImage("");
+    setImagePreview("");
+    setMusicVideoTitle("");
+    setMusicVideoLink("");
+    // Clear entries array
+    setEntries([]);
   };
 
   if (!user) {
@@ -229,8 +232,8 @@ const App = () => {
       <section className="main-section">
         {/* Quick entry form section */}
         <div className="quick-entry-form">
-          <h2>{`${selectedDate.getMonth() + 1}/${selectedDate.getDate()}/${selectedDate.getFullYear()}`}</h2> {/* Use selectedDate instead of currentDate */}
-          <Calendar currentDate={selectedDate} onDayClick={handleDateClick} /> {/* Calendar component */}
+          <h2>{selectedDate.toDateString()}</h2> {/* Use selectedDate instead of currentDate */}
+          <Calendar currentDate={selectedDate} onDateClick={handleDateClick} /> {/* Calendar component */}
           {error && <p style={{ color: 'red' }}>{error}</p>}
           {/* Form inputs */}
           <input
@@ -352,7 +355,7 @@ const App = () => {
                   </button>
                 </div>
               </div>
-            )).reverse() // Reverse the order of entries
+            ))
           )}
         </div>
       </section>
