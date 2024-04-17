@@ -4,14 +4,16 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-import Calendar from './Calendar';
+import Calendar from './Calendar'; // Import Calendar component
 import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
 
-import './App.css';
+import './App.css'; // Import CSS file for styling
 
+// Initialize Firestore and Authentication
 const firestore = getFirestore();
 const auth = getAuth();
 
+// Main component
 const App = () => {
   const [user, setUser] = useState(null); // State to hold user data
   const [entryTitle, setEntryTitle] = useState(""); // State for entry title
@@ -42,9 +44,11 @@ const App = () => {
     // Effect hook to handle user authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       if (user) {
+        // If user is authenticated, set user state and fetch entry details
         setUser(user);
         fetchEntryDetails(user.uid);
       } else {
+        // If user is not authenticated, reset user state and entry details
         setUser(null);
         setEntryTitle("");
         setEntryText("");
@@ -52,24 +56,37 @@ const App = () => {
         setImagePreview("");
         setMusicVideoTitle("");
         setMusicVideoLink("");
+        setEntries([]); // Reset entries when user is not authenticated
       }
     });
 
     return () => unsubscribe(); // Cleanup function
-  }, []);
+  }, []); // Run this effect only once after component mounts
+
+  useEffect(() => {
+    // Fetch entry details when selected date or user changes
+    fetchEntryDetails(user?.uid); // Fetch entries only if user is authenticated
+  }, [selectedDate, user]); // Run this effect when selectedDate or user changes
 
   const fetchEntryDetails = async (userId) => {
     // Function to fetch diary entries from Firestore
     try {
       setLoading(true);
-      const entriesRef = collection(firestore, `diary_entries/${userId}/entries`);
-      const querySnapshot = await getDocs(entriesRef);
-      const userEntries = [];
-      querySnapshot.forEach((doc) => {
-        const entryData = doc.data();
-        userEntries.push({ id: doc.id, ...entryData, timestamp: entryData.timestamp.toDate() });
-      });
-      setEntries(userEntries);
+      if (userId) {
+        // Fetch entries from Firestore for the selected user
+        const entriesRef = collection(firestore, `diary_entries/${userId}/entries`);
+        const querySnapshot = await getDocs(entriesRef);
+        const userEntries = [];
+        querySnapshot.forEach((doc) => {
+          const entryData = doc.data();
+          const entryDate = entryData.timestamp.toDate();
+          // Filter entries based on the selected date
+          if (entryDate.toDateString() === selectedDate.toDateString()) {
+            userEntries.push({ id: doc.id, ...entryData, timestamp: entryDate });
+          }
+        });
+        setEntries(userEntries);
+      }
     } catch (error) {
       setError("Error fetching entry details. Please try again later.");
       console.error("Error fetching entry details: ", error);
@@ -94,6 +111,7 @@ const App = () => {
   };
 
   const handleImageChange = (event) => {
+    // Handle image selection and preview
     const selectedFile = event.target.files[0];
     const reader = new FileReader();
     reader.onload = () => {
@@ -215,6 +233,7 @@ const App = () => {
   };
 
   if (!user) {
+    // If user is not authenticated, display login message
     return <div>Please log in to access this page</div>;
   }
 
@@ -244,9 +263,9 @@ const App = () => {
       <section className="main-section">
         {/* Quick entry form section */}
         <div className="quick-entry-form">
-          <h2>{selectedDate.toDateString()}</h2> {/* Use selectedDate instead of currentDate */}
+          <h2>{selectedDate.toDateString()}</h2> {/* Display selected date */}
           <Calendar currentDate={selectedDate} onDateClick={handleDateClick} /> {/* Calendar component */}
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message if any */}
           {/* Form inputs */}
           <input
             type="text"
@@ -324,38 +343,18 @@ const App = () => {
               <div key={entry.id} className="entry-card">
                 {/* Display entry details */}
                 <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{new Date(entry.timestamp).toLocaleDateString()}</h3>
-                <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.title}</h4>
+                <h2 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.title}</h2>
                 <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
-                {entry.image && (
-                  <img
-                    src={entry.image}
-                    alt="Entry"
-                    style={{
-                      maxWidth: '100%',
-                      marginBottom: '10px',
-                      borderRadius: '5px',
-                      border: '1px solid #ccc',
-                    }}
-                    onError={(e) => console.error('Error loading image:', e)}
-                  />
-                )}
-                {entry.musicVideoTitle && entry.musicVideoLink && (
-                  <div className="music-section">
-                    <h4 style={{ fontSize: '1.3em', marginBottom: '10px' }}>{entry.musicVideoTitle}</h4>
-                    {/* Embed YouTube video */}
-                    <iframe
-                      ref={videoRef}
-                      title="music-player"
-                      width="100%"
-                      height="166"
-                      frameBorder="no"
-                      allow="autoplay; fullscreen"
-                      allowFullScreen
-                      src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicVideoLink)}`}
-                      style={{ borderRadius: '5px' }}
-                      onError={(e) => console.error('Error loading YouTube video:', e)}
-                    ></iframe>
-                  </div>
+                {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />}
+                {entry.musicVideoLink && (
+                  <iframe
+                    title="Music/Video Player"
+                    width="100%"
+                    height="315"
+                    src={`https://www.youtube.com/embed/${getYouTubeVideoId(entry.musicVideoLink)}`}
+                    frameBorder="0"
+                    allowFullScreen
+                  ></iframe>
                 )}
                 {/* Entry actions */}
                 <div className="entry-actions">
