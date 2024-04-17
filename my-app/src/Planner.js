@@ -1,98 +1,112 @@
 import React, { useState, useEffect } from 'react';
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore'; // Import Firestore functions
 import './Planner.css';
 
 const Planner = () => {
   // State variables
-  const [tasks, setTasks] = useState(() => {
-    const storedTasks = localStorage.getItem('tasks');
-    return storedTasks ? JSON.parse(storedTasks) : [];
-  });
-  const [taskInput, setTaskInput] = useState(''); // Input for new task
-  const [priorityInput, setPriorityInput] = useState(''); // Input for task priority
-  const [sortOption, setSortOption] = useState('priority'); // Sorting option
+  const [tasks, setTasks] = useState([]);
+  const [taskInput, setTaskInput] = useState('');
+  const [priorityInput, setPriorityInput] = useState('');
+  const [sortOption, setSortOption] = useState('priority');
 
-  // Save tasks to localStorage whenever there's a change
+  // Firestore instance
+  const firestore = getFirestore();
+
+  // Fetch tasks from Firestore on component mount
   useEffect(() => {
-    localStorage.setItem('tasks', JSON.stringify(tasks));
-  }, [tasks]);
+    fetchTasks();
+  }, []);
 
-  // Add a new task
-  const addTask = () => {
-    if (taskInput.trim() !== '') {
-      const newTask = {
-        id: Date.now(),
-        task: taskInput,
-        priority: priorityInput || 'Normal',
-        completed: false,
-      };
-      // Add new task to the tasks array
-      setTasks([...tasks, newTask]);
-      // Clear input fields
-      setTaskInput('');
-      setPriorityInput('');
+  // Function to fetch tasks from Firestore
+  const fetchTasks = async () => {
+    try {
+      const tasksSnapshot = await getDocs(collection(firestore, 'tasks')); // Get tasks collection
+      const tasksData = tasksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Map Firestore documents to tasks array
+      setTasks(tasksData); // Set tasks state
+    } catch (error) {
+      console.error('Error fetching tasks: ', error);
     }
   };
 
-  // Delete a task
-  const deleteTask = (taskId) => {
-    // Filter out the task with the given ID
-    setTasks(tasks.filter(task => task.id !== taskId));
+  // Function to add a new task
+  const addTask = async () => {
+    try {
+      const newTaskRef = await addDoc(collection(firestore, 'tasks'), {
+        task: taskInput,
+        priority: priorityInput || 'Normal',
+        completed: false
+      });
+      setTasks([...tasks, { id: newTaskRef.id, task: taskInput, priority: priorityInput || 'Normal', completed: false }]);
+      setTaskInput('');
+      setPriorityInput('');
+    } catch (error) {
+      console.error('Error adding task: ', error);
+    }
   };
 
-  // Toggle task completion status
-  const toggleTaskCompletion = (taskId) => {
-    // Toggle completion status of the task with the given ID
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, completed: !task.completed } : task
-    ));
+  // Function to delete a task
+  const deleteTask = async (taskId) => {
+    try {
+      await deleteDoc(doc(firestore, 'tasks', taskId)); // Delete task document
+      setTasks(tasks.filter(task => task.id !== taskId)); // Remove task from tasks array
+    } catch (error) {
+      console.error('Error deleting task: ', error);
+    }
   };
 
-  // Edit task name or priority
-  const editTask = (taskId, newTaskName, newPriority) => {
-    // Update task with the given ID
-    setTasks(tasks.map(task =>
-      task.id === taskId ? { ...task, task: newTaskName, priority: newPriority } : task
-    ));
+  // Function to toggle task completion status
+  const toggleTaskCompletion = async (taskId, completed) => {
+    try {
+      await updateDoc(doc(firestore, 'tasks', taskId), { completed: !completed }); // Update task completion status
+      setTasks(tasks.map(task => (task.id === taskId ? { ...task, completed: !completed } : task))); // Update tasks array
+    } catch (error) {
+      console.error('Error updating task completion: ', error);
+    }
   };
 
-  // Sort tasks based on selected option
+  // Function to edit task name or priority
+  const editTask = async (taskId, newTaskName, newPriority) => {
+    try {
+      await updateDoc(doc(firestore, 'tasks', taskId), { task: newTaskName, priority: newPriority }); // Update task document
+      setTasks(tasks.map(task => (task.id === taskId ? { ...task, task: newTaskName, priority: newPriority } : task))); // Update tasks array
+    } catch (error) {
+      console.error('Error updating task: ', error);
+    }
+  };
+
+  // Function to sort tasks based on selected option
   const sortTasks = (option) => {
-    // Update sort option
-    setSortOption(option);
-    // Copy tasks array
-    const sortedTasks = [...tasks];
-    // Sort tasks based on selected option
+    setSortOption(option); // Update sort option state
+    const sortedTasks = [...tasks]; // Create a copy of tasks array
     switch (option) {
       case 'priority':
         sortedTasks.sort((a, b) => {
           const priorityValue = { High: 3, Normal: 2, Low: 1 };
-          return priorityValue[b.priority] - priorityValue[a.priority];
+          return priorityValue[b.priority] - priorityValue[a.priority]; // Sort tasks by priority
         });
         break;
       case 'completed':
-        sortedTasks.sort((a, b) => a.completed - b.completed);
+        sortedTasks.sort((a, b) => a.completed - b.completed); // Sort tasks by completion status
         break;
       default:
         break;
     }
-    // Update tasks array with sorted tasks
-    setTasks(sortedTasks);
+    setTasks(sortedTasks); // Update tasks array with sorted tasks
   };
 
   // Function to get emoji based on priority
-const getPriorityEmoji = (priority) => {
-  switch (priority) {
-    case 'High':
-      return '🔥🚀';
-    case 'Normal':
-      return '😊✅';
-    case 'Low':
-      return '🟢🐢';
-    default:
-      return '';
-  }
-};
-
+  const getPriorityEmoji = (priority) => {
+    switch (priority) {
+      case 'High':
+        return '🔥🚀';
+      case 'Normal':
+        return '😊✅';
+      case 'Low':
+        return '🟢🐢';
+      default:
+        return '';
+    }
+  };
 
   // JSX rendering
   return (
@@ -157,7 +171,7 @@ const getPriorityEmoji = (priority) => {
                 padding: '10px 20px' 
               }} 
               className="complete-button" 
-              onClick={() => toggleTaskCompletion(task.id)}
+              onClick={() => toggleTaskCompletion(task.id, task.completed)}
             >
               {task.completed ? <>&#10003; Undo</> : 'Complete'}
             </button>
