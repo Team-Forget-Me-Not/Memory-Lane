@@ -148,7 +148,7 @@ const App = () => {
         image: image,
         musicVideoTitle,
         musicVideoLink,
-        timestamp: serverTimestamp()
+        timestamp: selectedDate, // Set the timestamp to the selected date
       };
 
       if (editEntryId) {
