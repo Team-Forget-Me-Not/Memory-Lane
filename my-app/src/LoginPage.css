@@ -77,7 +77,7 @@
 body{
     margin: 0; /* Remove default body margin */
     padding: 0; /* Remove default body padding */
-    overflow: hidden;
+    overflow:auto;
 }
 
 /* Styles for the logo */
