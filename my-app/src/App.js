@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar'; // Import Calendar component
 import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
 
@@ -240,11 +241,11 @@ const App = () => {
   return (
     <div className="App">
       <header>
-        {/* Header with navigation links */}
+        {/* Navigation links */}
         <Link to="/Front-page" style={{ textDecoration: 'none' }}>
           <img src="MemoryLane.jpeg" alt="Memory Lane" className="logo-image" />
-        </Link>
-        <nav>
+          </Link>
+          <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faHouse} /> Log out
           </Link>
@@ -281,8 +282,10 @@ const App = () => {
             style={{ fontSize: '1.2em', minHeight: '100px', padding: '5px', marginBottom: '10px' }}
           />
           {/* Button to toggle emoji picker */}
-          <button onClick={() => setShowEmojiPicker(prevState => !prevState)}>Add Emoji</button>
-          {/* Emoji picker */}
+          <button onClick={() => setShowEmojiPicker(prevState => !prevState)}>
+              Add Emoji <FontAwesomeIcon icon={faSmile} />
+            </button>          
+            {/* Emoji picker */}
           {showEmojiPicker && <EmojiPicker onSelect={handleEmojiSelect} />}
           {/* Button to upload image */}
           <button className="upload-button" onClick={() => document.getElementById('image-upload').click()}>
