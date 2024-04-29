@@ -79,10 +79,12 @@ body{
     padding: 0; /* Remove default body padding */
     overflow:auto;
 }
+.logo{
+    width: 5%;
+    height: 5%;
+    margin-right: 95%;
 
-/* Styles for the logo */
-.logo {
-    width: 5%; /* 5% of the container width */
-    height: 5%; /* 5% of the container height */
-    margin-right: 95%; /* 95% right margin */
+}
+.error-message {
+    color: red;
 }
