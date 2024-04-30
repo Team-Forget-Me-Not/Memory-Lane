@@ -4,6 +4,7 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar'; // Import Calendar component
 import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
 
@@ -281,8 +282,10 @@ const App = () => {
             style={{ fontSize: '1.2em', minHeight: '100px', padding: '5px', marginBottom: '10px' }}
           />
           {/* Button to toggle emoji picker */}
-          <button onClick={() => setShowEmojiPicker(prevState => !prevState)}>Add Emoji</button>
-          {/* Emoji picker */}
+          <button onClick={() => setShowEmojiPicker(prevState => !prevState)}>
+              Add Emoji <FontAwesomeIcon icon={faSmile} />
+            </button>          
+            {/* Emoji picker */}
           {showEmojiPicker && <EmojiPicker onSelect={handleEmojiSelect} />}
           {/* Button to upload image */}
           <button className="upload-button" onClick={() => document.getElementById('image-upload').click()}>
@@ -341,12 +344,16 @@ const App = () => {
           ) : (
             entries.map((entry) => (
               <div key={entry.id} className="entry-card">
-                {/* Display entry details */}
-                <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{new Date(entry.timestamp).toLocaleDateString()}</h3>
-                <h2 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.title}</h2>
-                <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
-                {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />}
-                {entry.musicVideoLink && (
+              {/* Display entry details */}
+              <h3 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{new Date(entry.timestamp).toLocaleDateString()}</h3>
+              <h2 style={{ fontSize: '1.5em', marginBottom: '10px' }}>{entry.title}</h2>
+              <p style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.text}</p>
+              {entry.image && <img src={entry.image} alt="Entry" style={{ maxWidth: '100%', marginBottom: '10px', borderRadius: '5px', border: '1px solid #ccc' }} />}
+              {entry.musicVideoLink && (
+                <div className="video-container">
+                  {/* Display music/video title */}
+                  <h4 style={{ fontSize: '1.2em', marginBottom: '10px' }}>{entry.musicVideoTitle}</h4>
+                  {/* Display video */}
                   <iframe
                     title="Music/Video Player"
                     width="100%"
@@ -355,17 +362,18 @@ const App = () => {
                     frameBorder="0"
                     allowFullScreen
                   ></iframe>
-                )}
-                {/* Entry actions */}
-                <div className="entry-actions">
-                  <button onClick={() => handleEditEntry(entry.id)} className="edit-button">
-                    <FontAwesomeIcon icon={faEdit} /> Edit
-                  </button>
-                  <button onClick={() => handleDeleteEntry(entry.id)} className="delete-button">
-                    <FontAwesomeIcon icon={faTrash} /> Delete
-                  </button>
                 </div>
+              )}
+              {/* Entry actions */}
+              <div className="entry-actions">
+                <button onClick={() => handleEditEntry(entry.id)} className="edit-button">
+                  <FontAwesomeIcon icon={faEdit} /> Edit
+                </button>
+                <button onClick={() => handleDeleteEntry(entry.id)} className="delete-button">
+                  <FontAwesomeIcon icon={faTrash} /> Delete
+                </button>
               </div>
+            </div>
             ))
           )}
         </div>
