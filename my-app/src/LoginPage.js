@@ -41,7 +41,7 @@ const handleSignIn = async (e) => {
         uid = firebase.auth().currentUser.uid;
         console.log('Login successful')
         // Use history to redirect to the homepage
-        history.push('/');
+        history.push('/app');
     } catch (error) {
         // Display a generic error message for failed login attempts
         setError('Email/username or password incorrect');
