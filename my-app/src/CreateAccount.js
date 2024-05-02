@@ -70,7 +70,7 @@ const CreateAccount = () => {
       await docRef.set(userData);
 
       // Alert when registration is successful
-      alert("Register Successfully");
+      alert("Registered Successfully");
 
       console.log('Document written with ID: ', docRef.id);
 
