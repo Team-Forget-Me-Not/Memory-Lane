@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore'; // Import Firestore functions
 import './Planner.css';
 
-const Planner = ({ uid }) => { // Accept uid as a prop
+const Planner = () => {
   // State variables
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
@@ -21,9 +21,7 @@ const Planner = ({ uid }) => { // Accept uid as a prop
   const fetchTasks = async () => {
     try {
       const tasksSnapshot = await getDocs(collection(firestore, 'tasks')); // Get tasks collection
-      const tasksData = tasksSnapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() })) // Map Firestore documents to tasks array
-        .filter(task => task.uid === uid); // Filter tasks by UID
+      const tasksData = tasksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })); // Map Firestore documents to tasks array
       setTasks(tasksData); // Set tasks state
     } catch (error) {
       console.error('Error fetching tasks: ', error);
@@ -36,10 +34,9 @@ const Planner = ({ uid }) => { // Accept uid as a prop
       const newTaskRef = await addDoc(collection(firestore, 'tasks'), {
         task: taskInput,
         priority: priorityInput || 'Normal',
-        completed: false,
-        uid: uid // Include UID when adding task
+        completed: false
       });
-      setTasks([...tasks, { id: newTaskRef.id, task: taskInput, priority: priorityInput || 'Normal', completed: false, uid: uid }]);
+      setTasks([...tasks, { id: newTaskRef.id, task: taskInput, priority: priorityInput || 'Normal', completed: false }]);
       setTaskInput('');
       setPriorityInput('');
     } catch (error) {
@@ -194,3 +191,4 @@ const Planner = ({ uid }) => { // Accept uid as a prop
 };
 
 export default Planner;
+
