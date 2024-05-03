@@ -1,30 +1,42 @@
 import React, { useState, useEffect } from 'react';
-import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs } from 'firebase/firestore'; // Import Firestore functions
+import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase Auth functions
+import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where } from 'firebase/firestore'; // Import Firestore functions
 import './Planner.css';
 
-const Planner = ({ uid }) => { // Accept uid as a prop
+const Planner = () => {
   // State variables
   const [tasks, setTasks] = useState([]);
   const [taskInput, setTaskInput] = useState('');
   const [priorityInput, setPriorityInput] = useState('');
   const [sortOption, setSortOption] = useState('priority');
+  const [currentUser, setCurrentUser] = useState(null); // State to store current user
 
   // Firestore instance
   const firestore = getFirestore();
+  const auth = getAuth();
 
   // Fetch tasks from Firestore on component mount
   useEffect(() => {
-    fetchTasks();
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user); // Set current user state
+      if (user) {
+        fetchTasks(user.uid); // Fetch tasks for the current user
+      } else {
+        setTasks([]); // Clear tasks if no user is logged in
+      }
+    });
+
+    return () => unsubscribe(); // Cleanup function
   }, []);
 
   // Function to fetch tasks from Firestore
-  const fetchTasks = async () => {
+  const fetchTasks = async (uid) => {
     try {
-      const tasksSnapshot = await getDocs(collection(firestore, 'tasks')); // Get tasks collection
-      const tasksData = tasksSnapshot.docs
-        .map(doc => ({ id: doc.id, ...doc.data() })) // Map Firestore documents to tasks array
-        .filter(task => task.uid === uid); // Filter tasks by UID
-      setTasks(tasksData); // Set tasks state
+      const userTasksQuery = query(collection(firestore, 'tasks'), where('uid', '==', uid));
+      const tasksSnapshot = await getDocs(userTasksQuery);
+      const tasksData = tasksSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTasks(tasksData);
     } catch (error) {
       console.error('Error fetching tasks: ', error);
     }
@@ -33,15 +45,17 @@ const Planner = ({ uid }) => { // Accept uid as a prop
   // Function to add a new task
   const addTask = async () => {
     try {
-      const newTaskRef = await addDoc(collection(firestore, 'tasks'), {
-        task: taskInput,
-        priority: priorityInput || 'Normal',
-        completed: false,
-        uid: uid // Include UID when adding task
-      });
-      setTasks([...tasks, { id: newTaskRef.id, task: taskInput, priority: priorityInput || 'Normal', completed: false, uid: uid }]);
-      setTaskInput('');
-      setPriorityInput('');
+      if (currentUser) {
+        const newTaskRef = await addDoc(collection(firestore, 'tasks'), {
+          task: taskInput,
+          priority: priorityInput || 'Normal',
+          completed: false,
+          uid: currentUser.uid // Associate task with current user's UID
+        });
+        setTasks([...tasks, { id: newTaskRef.id, task: taskInput, priority: priorityInput || 'Normal', completed: false }]);
+        setTaskInput('');
+        setPriorityInput('');
+      }
     } catch (error) {
       console.error('Error adding task: ', error);
     }
