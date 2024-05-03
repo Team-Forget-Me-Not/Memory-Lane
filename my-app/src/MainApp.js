@@ -5,6 +5,7 @@ import CreateAccount from './CreateAccount';
 import App from './App';
 import Login from './LoginPage';
 import Calendar from './Calendar';
+import MyCalendar from './MyCalendar';
 import FrontPage from './FrontPage';
 import ForgetPassword from './ForgetPassword';
 import Planner from './Planner';
@@ -18,6 +19,7 @@ const MainApp = () => {
         <Route path="/create-account" component={CreateAccount} />
         <Route path="/login-page" component={Login} />
         <Route path="/calendar" component={Calendar} />
+        <Route path="/my-calendar" component={MyCalendar} />
         <Route path="/front-page" component={FrontPage} />
         <Route path="/planner" component={Planner} />
         <Route path="/profile" component={Profile} />

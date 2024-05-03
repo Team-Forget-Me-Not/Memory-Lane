@@ -1,0 +1,25 @@
+.my-calendar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .calendar-container {
+    width: 800px; /* Adjust the width as needed */
+    margin: 0 auto;
+  }
+  
+  .calendar-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .calendar {
+    width: 100%;
+  }
+  
+  /* Customize calendar appearance */
+  /* Add your custom styles here */
+  

@@ -249,7 +249,7 @@ const App = () => {
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faHouse} /> Log out
           </Link>
-          <Link to="/Calendar" style={{ textDecoration: 'none' }}>
+          <Link to="/my-calendar" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
           </Link>
           <Link to="/planner" style={{ textDecoration: 'none' }}>
