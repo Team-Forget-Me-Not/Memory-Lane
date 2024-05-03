@@ -1,25 +1,63 @@
 .my-calendar {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
-  
-  .calendar-container {
-    width: 800px; /* Adjust the width as needed */
-    margin: 0 auto;
-  }
-  
-  .calendar-title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-  }
-  
-  .calendar {
-    width: 100%;
-  }
-  
-  /* Customize calendar appearance */
-  /* Add your custom styles here */
-  
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.calendar-container {
+  flex: 1; /* Grow to fill available space */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.calendar-title {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.calendar {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensure calendar fills container */
+  max-width: 800px; /* Adjust as needed */
+}
+
+/* Customize calendar appearance */
+.rbc-calendar {
+  height: 100%;
+}
+
+.rbc-toolbar {
+  display: flex;
+  justify-content: space-between; /* Align items with space between */
+  align-items: center;
+  margin-bottom: 10px;
+  overflow-x: auto; /* Enable horizontal scrolling for the toolbar if needed */
+}
+
+.rbc-btn-group {
+  display: flex;
+  align-items: center;
+}
+
+.rbc-toolbar button {
+  padding: 5px 10px; /* Adjust button padding */
+  background-color: #3174ad; /* Adjust toolbar button color as needed */
+  color: #fff;
+  min-width: auto; /* Ensure buttons can shrink if necessary */
+}
+
+.rbc-today {
+  background-color: #f0f0f0; /* Adjust today's date background color as needed */
+}
+
+.rbc-off-range {
+  color: #ccc;
+}
+
+.rbc-selected {
+  background-color: #cce0ff; /* Adjust selected date background color as needed */
+}

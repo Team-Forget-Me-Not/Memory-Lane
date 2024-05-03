@@ -18,14 +18,17 @@ const MyCalendar = () => {
 
   return (
     <div className="my-calendar">
-      <div style={{ height: '600px', margin: '20px', width: '500px' }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: '100%', width: '100%' }}
-        />
+      <div className="calendar-container">
+        <h2 className="calendar-title">My Calendar</h2>
+        <div className="calendar">
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ height: '600px' }}
+          />
+        </div>
       </div>
     </div>
   );
