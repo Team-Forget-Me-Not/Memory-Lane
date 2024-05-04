@@ -1,14 +1,13 @@
 /* General Styles */
-/* General body styles for the entire website */
 body {
-    margin: 0; /* Remove default body margin */
-    padding: 0; /* Remove default body padding */
+    margin: 0; 
+    padding: 0; 
     overflow: auto;
-    font-family: 'Arial', sans-serif; /* Consistent font family across the site */
+    font-family: 'Arial', sans-serif; 
 }
 
 body, html {
-    height: 100%; /* Ensures that the HTML and body tags take full viewport height */
+    height: 100%; 
 }
 
 /* Specific styles for the login page */
@@ -55,44 +54,44 @@ body, html {
     font-size: 2.0em; 
 }
 
-/* Login form container */
+
 .login-Center {
     text-align: center;
-    margin-top: 20px; /* Adjusted margin for better vertical positioning */
-    padding: 40px 40px; /* Reduced padding for less internal spacing */
+    margin-top: 20px;
+    padding: 40px 40px; 
     box-shadow: 0 0 20px rgba(13, 11, 11, 0.15);
     border-radius: 8px;
-    width: 95%; /* Full container width */
-    max-width: 400px; /* Max width to keep form reasonable on larger screens */
+    width: 95%; 
+    max-width: 400px; 
     position: relative;
     z-index: 1;
-    margin: 20px auto; /* Center the form horizontally in the viewport */
+    margin: 20px auto; 
     background: rgba(255, 255, 255, 0.9);
     display: flex;
     flex-direction: column;
-    align-items: center; /* Ensure children are centered horizontally */
+    align-items: center;
 }
 
-/* Adjust input fields to ensure they are centered */
+
 .login-Center input {
-    width: 80%; /* Slightly less than full width for aesthetic padding */
-    padding: 12px 20px; /* Comfortable padding for typing */
-    font-size: 1.2em; /* Larger font for readability */
-    border: 2px solid #ccc; /* Defined border for clarity */
-    border-radius: 4px; /* Rounded corners */
-    margin: 10px 0; /* Space between inputs */
-    display: block; /* Ensures inputs are treated as block elements for centering */
-    margin-left: auto; /* Auto margins for horizontal centering */
-    margin-right: auto; /* Auto margins for horizontal centering */
+    width: 80%; 
+    padding: 12px 20px; 
+    font-size: 1.2em; 
+    border: 2px solid #ccc; 
+    border-radius: 4px; 
+    margin: 10px 0; 
+    display: block; 
+    margin-left: auto;
+    margin-right: auto; 
 }
 
 .login-Center label {
-    display: block; /* Make sure labels are also block for correct alignment */
+    display: block;
     text-align: center; /* Center labels text */
     margin-bottom: 5px; /* Space before the inputs */
 }
 
-/* Additional responsiveness and accessibility */
+
 @media (max-width: 768px) {
     .header-Container, .login-Center {
         padding: 10px 0;
