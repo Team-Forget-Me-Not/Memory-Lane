@@ -15,24 +15,34 @@ body {
 
 /* Header Container styles */
 .header-Container {
-    background-color: rgba(127, 217, 255, 0.8); /* Semi-transparent light blue background */
-    text-align: center;
-    padding: 20px 0;
+    background-color: #7fd9ff; /* Light blue background color */
+    display: flex; /* Enable flexbox layout */
+    align-items: center; /* Vertically center all items in the container */
+    justify-content: space-between; /* Space elements out between left and right edges */
+    padding: 1px 40px; /* Adjust padding for better spacing */
     z-index: 2;
     position: relative;
 }
 
+
+.header-Container h1 {
+    font-size: 3em; /* Smaller font size */
+    color: #ff5a5a; /* Maintain white color for visibility */
+    margin: 0;
+    padding: 0;
+}
+
 /* Adjust the size of the logo */
 .logo {
-    max-width: 150px; /* Adjust logo size */
+    max-width: 85px; /* Adjust logo size */
     height: auto; /* Maintain aspect ratio */
 }
 
 /* Login form container */
 .login-Center {
     text-align: center;
-    margin-top: 20px;
-    padding: 20px;
+    margin-top: 800px;
+    padding: 80px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
     border-radius: 8px;
     width: 90%;

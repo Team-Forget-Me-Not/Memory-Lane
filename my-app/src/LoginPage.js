@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import './LoginPage.css'; // Ensure your CSS file is imported
 import { useHistory, Link } from 'react-router-dom';
 import firebase from "./firebase";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse } from '@fortawesome/free-solid-svg-icons';
+
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -27,6 +30,9 @@ const Login = () => {
             <div className="header-Container">
                 <img src="MemoryLaneB.png" alt="Brain" className="logo" />
                 <h1>Memory Lane</h1>
+                <Link to="/Front-page" style={{ textDecoration: 'none' }}>
+            <FontAwesomeIcon icon={faHouse} /> Home
+        </Link>
             </div>
 
             {/* Login form container with background image */}
