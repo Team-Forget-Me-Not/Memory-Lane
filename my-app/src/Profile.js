@@ -142,6 +142,11 @@ const Profile = () => {
   }
 
   return (
+    <div>
+    <div className="header-banner">
+      <img src="MemoryLaneB.png" alt="Logo" className="logo" />
+      Memory Lane
+    </div>
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-picture-container" onClick={() => document.getElementById('profile-pic-input').click()}>
@@ -184,6 +189,7 @@ const Profile = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

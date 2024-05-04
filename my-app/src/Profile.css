@@ -1,3 +1,24 @@
+/*Navigation Bar Header */
+.header-banner {
+  width: 100%;
+  background-color: #7fd9ff; 
+  padding: .5em; 
+  display: flex;
+  align-items: center;
+  text-align: center; 
+  justify-content: flex-start; 
+  color: #ff5a5a; 
+  font-size: 2em; 
+  font-weight: bold;
+  
+}
+
+.header-banner img {
+  max-width: 85px; /* Maximum width of the image */
+  height: auto; /* Maintain aspect ratio */
+  margin-right: 10px; /* Space between the image and the text */
+}
+
 /* Styles for the profile container */
 .profile-container {
   max-width: 600px; /* Sets maximum width */
