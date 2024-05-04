@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth, onAuthStateChanged } from 'firebase/auth'; // Import Firebase Auth functions
 import { getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, query, where } from 'firebase/firestore'; // Import Firestore functions
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faCalendarAlt, faUser } from '@fortawesome/free-solid-svg-icons';
 import './Planner.css';
+import { Link } from 'react-router-dom';
 
 const Planner = () => {
   // State variables
@@ -128,6 +131,23 @@ const Planner = () => {
   // JSX rendering
   return (
     <div className="planner">
+    <div className="banner-header">
+      <div className="header-left">
+        <img src="MemoryLaneB.png" alt="Logo" className="logo" />
+        Memory Lane
+      </div>
+      <div className="header-right">
+        <Link to="/App" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <FontAwesomeIcon icon={faHouse} /> Home
+        </Link>
+        <Link to="/my-calendar" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
+        </Link>
+        <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
+          <FontAwesomeIcon icon={faUser} /> Profile
+        </Link>
+      </div>
+    </div>
       <h2>Planner</h2>
       <div className="task-input">
         {/* Input fields for task and priority */}

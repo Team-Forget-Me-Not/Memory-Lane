@@ -4,10 +4,12 @@
   padding: 0.5em; 
   display: flex;
   align-items: center; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   justify-content: space-between; 
   color: #ff5a5a; 
   font-size: 2em;
   font-weight: bold;
+  position: relative;
 }
 
 .logo-container {
