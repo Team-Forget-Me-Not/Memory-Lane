@@ -7,53 +7,46 @@ body {
     font-family: 'Arial', sans-serif; /* Consistent font family across the site */
 }
 
+body, html {
+    height: 100%; /* Ensures that the HTML and body tags take full viewport height */
+}
+
 /* Specific styles for the login page */
 .login-body {
+    min-height: 85vh; 
+    display: flex;
+    flex-direction: column;
     background: url('/public/CCL Diary.jpg') no-repeat center center; /* Background image for the login page */
-    background-size: cover; /* Ensure the image covers the full background */
+    background-size: cover; 
 }
 
 /* Header Container styles */
 .header-Container {
-    background-color: #7fd9ff; /* Light blue background color */
-    display: flex; /* Enable flexbox layout */
-    align-items: center; /* Vertically center all items in the container */
-    justify-content: space-between; /* Space elements out between left and right edges */
-    padding: 1px 40px; 
-    z-index: 2;
-    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1em;
+    background-color: #7fd9ff;
 }
 
 
 .header-Container h1 {
-    font-size: 3em; /* Smaller font size */
-    color: #ff5a5a; /* Maintain white color for visibility */
+    font-size: 2em; 
+    color: #ff5a5a; 
     margin: 0;
     padding: 0;
+}
+
+.logo-and-title {
+    display: flex;
+    align-items: center;
 }
 
 /* Adjust the size of the logo */
 .logo {
     max-width: 85px; /* Adjust logo size */
-    height: auto; /* Maintain aspect ratio */
-}
-
-/* Login form container */
-.login-Center {
-    text-align: center;
-    margin-top: 40px;
-    padding: 80px;
-    box-shadow: 0 0 20px rgba(13, 11, 11, 0.15);
-    border-radius: 8px;
-    width: 90%;
-    max-width: 400px;
-    position: relative;
-    z-index: 1;
-    margin: 40px auto 0;
-    background: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column; 
-    align-items: center; 
+    height: auto; 
+    margin-right: 10px;
 }
 
 .login-Center h2 {
@@ -62,10 +55,41 @@ body {
     font-size: 2.0em; 
 }
 
+/* Login form container */
+.login-Center {
+    text-align: center;
+    margin-top: 20px; /* Adjusted margin for better vertical positioning */
+    padding: 40px 40px; /* Reduced padding for less internal spacing */
+    box-shadow: 0 0 20px rgba(13, 11, 11, 0.15);
+    border-radius: 8px;
+    width: 95%; /* Full container width */
+    max-width: 400px; /* Max width to keep form reasonable on larger screens */
+    position: relative;
+    z-index: 1;
+    margin: 20px auto; /* Center the form horizontally in the viewport */
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Ensure children are centered horizontally */
+}
 
-.login-Center label, .login-Center input {
-    width: 100%; /* Ensure full width within container */
-    margin: 5px 0; /* Add some vertical spacing */
+/* Adjust input fields to ensure they are centered */
+.login-Center input {
+    width: 80%; /* Slightly less than full width for aesthetic padding */
+    padding: 12px 20px; /* Comfortable padding for typing */
+    font-size: 1.2em; /* Larger font for readability */
+    border: 2px solid #ccc; /* Defined border for clarity */
+    border-radius: 4px; /* Rounded corners */
+    margin: 10px 0; /* Space between inputs */
+    display: block; /* Ensures inputs are treated as block elements for centering */
+    margin-left: auto; /* Auto margins for horizontal centering */
+    margin-right: auto; /* Auto margins for horizontal centering */
+}
+
+.login-Center label {
+    display: block; /* Make sure labels are also block for correct alignment */
+    text-align: center; /* Center labels text */
+    margin-bottom: 5px; /* Space before the inputs */
 }
 
 /* Additional responsiveness and accessibility */

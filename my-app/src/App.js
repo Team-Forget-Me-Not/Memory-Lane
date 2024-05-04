@@ -243,7 +243,7 @@ const App = () => {
       <header>
         {/* Navigation links */}
         <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-          <img src="MemoryLane.jpeg" alt="Memory Lane" className="logo-image" />
+          <img src="MemoryLaneB.png" alt="Memory Lane" className="logo-image" />
           </Link>
           <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>

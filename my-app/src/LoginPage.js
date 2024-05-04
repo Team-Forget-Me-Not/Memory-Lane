@@ -3,7 +3,7 @@ import './LoginPage.css'; // Ensure your CSS file is imported
 import { useHistory, Link } from 'react-router-dom';
 import firebase from "./firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 
 const Login = () => {
@@ -28,20 +28,25 @@ const Login = () => {
         <div className="login-body"> 
             {/* Header container with logo and title */}
             <div className="header-Container">
-                <img src="MemoryLaneB.png" alt="Brain" className="logo" />
-                <h1>Memory Lane</h1>
-                <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-            <FontAwesomeIcon icon={faHouse} /> Home
-        </Link>
-            </div>
+    <div className="logo-and-title">
+        <img src="MemoryLaneB.png" alt="Logo" className="logo" />
+        <h1>Memory Lane</h1>
+    </div>
+    <Link to="/Front-page" style={{ textDecoration: 'none' }}>
+        <FontAwesomeIcon icon={faHouse} /> Home
+    </Link>
+</div>
+
 
             {/* Login form container with background image */}
             <div className="login-Center">
                 <h2>Login</h2>
                 <form onSubmit={handleSignIn}>
-                    <label htmlFor="email">Email Address</label>
+                    <FontAwesomeIcon icon={faEnvelope} />
+                    <label htmlFor="email">  Email Address</label>
                     <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <label htmlFor="password">Password</label>
+                    <FontAwesomeIcon icon={faLock} />
+                    <label htmlFor="password">  Password</label>
                     <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <Link to="/forget-password">
                         <p id="forget-password">Forget password</p>
