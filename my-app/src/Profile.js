@@ -3,6 +3,9 @@ import { useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection } from 'firebase/firestore';
 import { SketchPicker } from 'react-color';
+import { Link } from 'react-router-dom';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouse, faCalendarAlt, faList, faUser } from '@fortawesome/free-solid-svg-icons';
 import './Profile.css';
 
 const firestore = getFirestore();
@@ -142,6 +145,24 @@ const Profile = () => {
   }
 
   return (
+    <div>
+      <div className="header-banner">
+        <div className="logo-container">
+          <img src="MemoryLaneB.png" alt="Logo" className="logo" />
+          <span>Memory Lane</span>
+        </div>
+        <nav>
+          <Link to="/App" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <FontAwesomeIcon icon={faHouse} /> Home
+          </Link>
+          <Link to="/my-calendar" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <FontAwesomeIcon icon={faCalendarAlt} /> Calendar
+          </Link>
+          <Link to="/planner" style={{ textDecoration: 'none', color: 'inherit' }}>
+            <FontAwesomeIcon icon={faList} /> Planner
+          </Link>
+        </nav>
+      </div>
     <div className="profile-container">
       <div className="profile-header">
         <div className="profile-picture-container" onClick={() => document.getElementById('profile-pic-input').click()}>
@@ -184,6 +205,7 @@ const Profile = () => {
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 };

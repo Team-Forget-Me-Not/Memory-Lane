@@ -17,6 +17,7 @@ header {
   background-color: #7fd9ff; 
   color: #ff5a5a;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
   padding: 1em;
   /* Flex layout for spacing and alignment */
   display: flex;
@@ -24,6 +25,8 @@ header {
   justify-content: space-between;
   align-items: center;
 }
+
+
 
 /* Styles for the navigation links */
 nav {

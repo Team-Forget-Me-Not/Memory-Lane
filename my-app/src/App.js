@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar'; // Import Calendar component
 import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
@@ -36,6 +36,12 @@ const App = () => {
   const [selectedEmoji, setSelectedEmoji] = useState(""); // State for selected emoji
 
   useEffect(() => {
+  // Apply stored background color from local storage
+  const storedBackgroundColor = localStorage.getItem('backgroundColor');
+  if (storedBackgroundColor) {
+    document.body.style.backgroundColor = storedBackgroundColor;
+  }
+
     // Check if there's an image stored in local storage
     const storedImage = localStorage.getItem('image');
     if (storedImage) {
@@ -242,12 +248,14 @@ const App = () => {
     <div className="App">
       <header>
         {/* Navigation links */}
-        <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-          <img src="MemoryLane.jpeg" alt="Memory Lane" className="logo-image" />
+        <Link to="/Front-page" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+          <img src="MemoryLaneB.png" alt="Memory Lane" className="logo-image" />
+          <span style={{ marginLeft: '10px', color: '#ff5a5a', fontSize: '2em', fontWeight: 'bold' }}>Memory Lane</span>
           </Link>
+          
           <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-            <FontAwesomeIcon icon={faHouse} /> Log out
+            <FontAwesomeIcon icon={faArrowLeft} /> Log Out
           </Link>
           <Link to="/my-calendar" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar

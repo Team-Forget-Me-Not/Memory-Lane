@@ -165,8 +165,8 @@ const CreateAccount = () => {
 
         {/* Button to submit the form */}
         <button onClick={handleSubmit}>
-          <FontAwesomeIcon icon={faArrowRight} />
-          Create Account
+          <FontAwesomeIcon icon={faArrowRight} /> 
+          &nbsp;Create Account
         </button>
       </div>
     </div>

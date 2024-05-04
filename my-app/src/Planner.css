@@ -1,10 +1,62 @@
 /* Planner.css */
 
+/*NAV Bar Header*/
+.banner-header {
+  background-color: #7fd9ff; /* Your chosen color */
+  text-align: center;
+  align-items: center; 
+  display: flex;
+  justify-content: space-between;
+  padding: 16px;
+  font-size: 18px;
+  color: #ff5a5a; 
+  font-size: 2em;
+  font-weight: bold;
+  width: 98.2%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.logo {
+  max-width: 85px;
+  height: auto;
+  margin-right: 10px; 
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+}
+
+
+.header-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* Aligns items to the right */
+  
+}
+
+.header-right a {
+  color: inherit;
+  text-decoration: none;
+  margin-right: 20px; /* Added margin-right to the links for consistent spacing */
+  font-size: 0.5em;
+}
+
+.header-right a:last-child {
+  margin-right: 0;
+}
+
+
+
+
 /* Styles for the main container of the Planner component */
 .planner {
     max-width: 600px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 110px 40px 40px;
     background-color: #f6f7f9;
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

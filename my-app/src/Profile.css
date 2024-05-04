@@ -1,3 +1,39 @@
+/*Navigation Bar Header */
+.header-banner {
+  background-color: #7fd9ff; 
+  padding: 0.5em; 
+  display: flex;
+  align-items: center; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  justify-content: space-between; 
+  color: #ff5a5a; 
+  font-size: 2em;
+  font-weight: bold;
+  position: relative;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center; 
+}
+
+.header-banner img {
+  max-width: 85px; 
+  height: auto; 
+  margin-right: 10px; 
+}
+
+.header-banner nav {
+  display: flex;
+  gap: 20px;
+}
+
+.header-banner nav a {
+  color: #ffffff;
+  font-size: 0.5em; 
+}
+
+
 /* Styles for the profile container */
 .profile-container {
   max-width: 600px; /* Sets maximum width */
