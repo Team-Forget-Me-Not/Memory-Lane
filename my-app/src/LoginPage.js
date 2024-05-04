@@ -25,7 +25,7 @@ const Login = () => {
     };
 
     return (
-        <div className="login-body"> {/* Apply the login-specific styles here */}
+        <div className="login-body"> 
             {/* Header container with logo and title */}
             <div className="header-Container">
                 <img src="MemoryLaneB.png" alt="Brain" className="logo" />
@@ -37,11 +37,11 @@ const Login = () => {
 
             {/* Login form container with background image */}
             <div className="login-Center">
-                <h2>Login Page</h2>
+                <h2>Login</h2>
                 <form onSubmit={handleSignIn}>
-                    <label htmlFor="email">Email or Username:</label>
+                    <label htmlFor="email">Email Address</label>
                     <input type="email" id="email" name="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                    <label htmlFor="password">Password:</label>
+                    <label htmlFor="password">Password</label>
                     <input type="password" id="password" name="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                     <Link to="/forget-password">
                         <p id="forget-password">Forget password</p>
@@ -49,9 +49,9 @@ const Login = () => {
                     {error && <p className="error-message">{error}</p>}
                     {confirmMessage && <p className="confirm-message">{confirmMessage}</p>}
                     <div className="buttonContainer">
-                        <button type="submit" className="button">Login</button>
+                        <button type="submit" className="button">Enter</button>
                         <Link to="/create-account">
-                            <button type='button' className='sign-up-btn'>Create Account</button>
+                            <button type='button' className='sign-up-btn'>Don't have an account?</button>
                         </Link>
                     </div>
                 </form>

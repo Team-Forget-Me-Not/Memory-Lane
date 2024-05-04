@@ -19,7 +19,7 @@ body {
     display: flex; /* Enable flexbox layout */
     align-items: center; /* Vertically center all items in the container */
     justify-content: space-between; /* Space elements out between left and right edges */
-    padding: 1px 40px; /* Adjust padding for better spacing */
+    padding: 1px 40px; 
     z-index: 2;
     position: relative;
 }
@@ -41,16 +41,31 @@ body {
 /* Login form container */
 .login-Center {
     text-align: center;
-    margin-top: 800px;
+    margin-top: 40px;
     padding: 80px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 0 20px rgba(13, 11, 11, 0.15);
     border-radius: 8px;
     width: 90%;
     max-width: 400px;
     position: relative;
     z-index: 1;
     margin: 40px auto 0;
-    background: rgba(255, 255, 255, 0.9); /* Slightly transparent white for form background */
+    background: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.login-Center h2 {
+    margin-top: 10;  
+    padding-top: 0px; 
+    font-size: 2.0em; 
+}
+
+
+.login-Center label, .login-Center input {
+    width: 100%; /* Ensure full width within container */
+    margin: 5px 0; /* Add some vertical spacing */
 }
 
 /* Additional responsiveness and accessibility */
