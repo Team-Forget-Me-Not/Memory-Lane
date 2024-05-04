@@ -3,7 +3,7 @@ import './LoginPage.css';
 import { useHistory, Link } from 'react-router-dom';
 import firebase from "./firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouse, faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faHouse, faEnvelope, faLock, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 const Login = () => {
@@ -32,7 +32,9 @@ const Login = () => {
         <img src="MemoryLaneB.png" alt="Logo" className="logo" />
         <h1>Memory Lane</h1>
     </div>
-
+    <Link to="/Front-page" style={{ textDecoration: 'none' }}>
+        <FontAwesomeIcon icon={faArrowLeft} /> Go Back
+    </Link>
 </div>
 
             <div className="login-Center">

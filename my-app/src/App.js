@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { getFirestore, doc, setDoc, getDoc, collection, deleteDoc, getDocs, query, where, addDoc, serverTimestamp } from 'firebase/firestore';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSave, faCalendarAlt, faImages, faHouse, faUser, faList, faEdit, faTrash, faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faSmile } from '@fortawesome/free-solid-svg-icons';
 import Calendar from './Calendar'; // Import Calendar component
 import EmojiPicker from './EmojiPicker'; // Import EmojiPicker component
@@ -247,7 +247,7 @@ const App = () => {
           </Link>
           <nav>
           <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-            <FontAwesomeIcon icon={faHouse} /> Log out
+            <FontAwesomeIcon icon={faArrowLeft} /> Log Out
           </Link>
           <Link to="/my-calendar" style={{ textDecoration: 'none' }}>
             <FontAwesomeIcon icon={faCalendarAlt} /> Calendar

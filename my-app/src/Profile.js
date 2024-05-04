@@ -161,9 +161,6 @@ const Profile = () => {
           <Link to="/planner" style={{ textDecoration: 'none', color: 'inherit' }}>
             <FontAwesomeIcon icon={faList} /> Planner
           </Link>
-          <Link to="/profile" style={{ textDecoration: 'none', color: 'inherit' }}>
-            <FontAwesomeIcon icon={faUser} /> Profile
-          </Link>
         </nav>
       </div>
     <div className="profile-container">
