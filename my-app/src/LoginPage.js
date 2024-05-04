@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import './LoginPage.css'; // Ensure your CSS file is imported
+import './LoginPage.css'; 
 import { useHistory, Link } from 'react-router-dom';
 import firebase from "./firebase";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -37,8 +37,6 @@ const Login = () => {
     </Link>
 </div>
 
-
-            {/* Login form container with background image */}
             <div className="login-Center">
                 <h2>Login</h2>
                 <form onSubmit={handleSignIn}>
