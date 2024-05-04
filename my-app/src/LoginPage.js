@@ -32,9 +32,7 @@ const Login = () => {
         <img src="MemoryLaneB.png" alt="Logo" className="logo" />
         <h1>Memory Lane</h1>
     </div>
-    <Link to="/Front-page" style={{ textDecoration: 'none' }}>
-        <FontAwesomeIcon icon={faHouse} /> Home
-    </Link>
+
 </div>
 
             <div className="login-Center">

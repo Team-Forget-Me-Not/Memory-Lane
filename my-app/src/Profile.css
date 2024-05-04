@@ -1,23 +1,36 @@
 /*Navigation Bar Header */
 .header-banner {
-  width: 100%;
   background-color: #7fd9ff; 
-  padding: .5em; 
+  padding: 0.5em; 
   display: flex;
-  align-items: center;
-  text-align: center; 
-  justify-content: flex-start; 
+  align-items: center; 
+  justify-content: space-between; 
   color: #ff5a5a; 
-  font-size: 2em; 
+  font-size: 2em;
   font-weight: bold;
-  
+}
+
+.logo-container {
+  display: flex;
+  align-items: center; 
 }
 
 .header-banner img {
-  max-width: 85px; /* Maximum width of the image */
-  height: auto; /* Maintain aspect ratio */
-  margin-right: 10px; /* Space between the image and the text */
+  max-width: 85px; 
+  height: auto; 
+  margin-right: 10px; 
 }
+
+.header-banner nav {
+  display: flex;
+  gap: 20px;
+}
+
+.header-banner nav a {
+  color: #ffffff;
+  font-size: 0.5em; 
+}
+
 
 /* Styles for the profile container */
 .profile-container {
