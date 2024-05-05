@@ -44,7 +44,9 @@ Before getting started, ensure you have Node.js installed on your machine. You c
    npm install react-hook-form@5.7.2  
    npm install react-router-dom@6.22.0  
    npm install react@18.2.0  
-   npm install tailwindcss@3.4.1  
+   npm install tailwindcss@3.4.1
+   npm i react-big-calendar
+
 
 4. **Start the project**  
 Type the following command into your terminal to launch the project:
