@@ -45,7 +45,7 @@ Before getting started, ensure you have Node.js installed on your machine. You c
    npm install react-router-dom@6.22.0  
    npm install react@18.2.0  
    npm install tailwindcss@3.4.1
-   npm i react-big-calendar
+   npm i react-big-calendar (make sure you do "cd my-app" in terminal and then install the command)
 
 
 4. **Start the project**  
