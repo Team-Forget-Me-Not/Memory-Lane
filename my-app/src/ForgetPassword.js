@@ -39,10 +39,10 @@ function ForgetPassword (){
     return (
         <div className="mainContainer">
             <div className="header-Container">
-                <img src="MemoryLane.jpeg" alt="Brain" className="logo1" /> {/* Logo */}
+                <img src="MemoryLaneB.png" alt="Brain" className="logo1" /> {/* Logo */}
             </div>
             <div className="Input-Container">
-                <p><b>Please enter your information to reset your password:</b></p>
+                <p><b>Please enter your information to reset your password</b></p>
                 {/* Form for resetting password */}
                 <form onSubmit={(e)=>handleSubmit(e)}>
                     <label htmlFor="email"><b>Email:</b></label>
